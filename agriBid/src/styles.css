@@ -1,0 +1,30 @@
+/* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+.app-backgroud-color {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #f8f0e1;
+}
+
+.header-background-color {
+    width: 100%;
+    background-color: #faf1e1;
+}
+
+.anchor-tag-styling-desable {
+    text-decoration: none;
+    color: #212529;
+}
+.text-size {
+    font-size: 80px;
+}
+.button-stylign-1 {
+    color: #ffffff;
+    background-color: #394f2c;
+}
+.home-page-icons-size {
+    font-size: 40px;
+}

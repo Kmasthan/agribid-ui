@@ -1,74 +1,59 @@
-<div class="app-backgroud-color">
+<div class="container-fluid app-backgroud-color">
 
-    <!-- Header starts -->
-    <div class="row header-background-color">
-        <div class="col-md-4 col-sm-4 text-center">
+    <!-- Header -->
+    <div class="row align-items-center py-3 header-background-color text-center text-md-start">
+        <div class="col-12 col-md-4 text-center">
             <h1>AGRI BID</h1>
         </div>
-        <div class="col-md-3 col-sm-3"></div>
-        <div class="col-md-1 col-sm-1 pt-3">
-            <h4>Home</h4>
-        </div>
-        <div class="col-md-1 col-sm-1 pt-3">
-            <h4>About</h4>
-        </div>
-        <div class="col-md-1 col-sm-1 pt-3">
-            <h4>Contact</h4>
-        </div>
-        <div class="col-md-1 col-sm-1 pt-3">
-            <h4>
+
+        <div class="col-12 col-md-8 d-flex justify-content-center justify-content-md-end mt-3 mt-md-0 gap-4">
+            <h5 class="mb-0">Home</h5>
+            <h5 class="mb-0">About</h5>
+            <h5 class="mb-0">Contact</h5>
+            <h5 class="mb-0">
                 <a routerLink="/login" class="anchor-tag-styling-desable">Login</a>
-            </h4>
-        </div>
-        <div class="col-md-1 col-sm-1"></div>
-    </div>
-    <!-- Header Ends -->
-
-    <!-- Image Content start -->
-    <div class="row home-page-image">
-        <div class="col-md-2 col-sm-2"></div>
-        <div class="col-md-8 col-sm-8 text-center text-size pt-4 pb-4">
-            Empowering Farmers. Fair Prices. Trasparent Bidding.
-        </div>
-        <div class="col-md-2 col-sm-2"></div>
-        <div class="row">
-            <div class="col-md-2 col-sm-2"></div>
-            <div class="col-md-4 col-sm-4 text-center">
-                <button class="button-stylign-1 rounded ps-4 pe-4 pt-2 pb-2">
-                    <h4>Register as Farmer</h4>
-                </button>
-            </div>
-            <div class="col-md-4 col-sm-4 text-center">
-                <button class="btn-light rounded ps-4 pe-4 pt-2 pb-2">
-                    <h4>Register as Buyer</h4>
-                </button>
-            </div>
-            <div class="col-md-2 col-sm-2"></div>
+            </h5>
         </div>
     </div>
-    <!-- Image Content start -->
 
-    <!-- Feature Section Starts -->
-    <div class="row pt-4">
-        <div class="col-md-12 col-sm-12 text-center pb-2">
+    <!-- Hero Image Section -->
+    <div class="home-page-image d-flex flex-column justify-content-center align-items-center text-center px-3 py-5">
+        <h2 class="display-6 mb-4">Empowering Farmers. Fair Prices. Transparent Bidding.</h2>
+
+        <div class="d-flex flex-wrap justify-content-center gap-3">
+            <button class="btn btn-success px-4 py-2">
+                <h5 class="mb-0">Register as Farmer</h5>
+            </button>
+            <button class="btn btn-light px-4 py-2">
+                <h5 class="mb-0">Register as Buyer</h5>
+            </button>
+        </div>
+    </div>
+
+
+    <!-- Feature Section -->
+    <div class="row text-center py-5">
+        <div class="col-12 mb-4">
             <h2>Feature Section</h2>
         </div>
-        <div class="col-md-4 col-sm-4 text-center">
-            <b><i class="bi bi-clock home-page-icons-size"></i></b><br>
-            <span><b>Real-time Bidding</b></span><br>
-            <span>Participate in live auctions with instant updates.</span>
+
+        <div class="col-12 col-md-4 mb-4">
+            <i class="bi bi-clock home-page-icons-size d-block mb-2"></i>
+            <strong>Real-time Bidding</strong><br>
+            <small>Participate in live auctions with instant updates.</small>
         </div>
-        <div class="col-md-4 col-sm-4 text-center">
-            <b><i class="fa-solid fa-wheat-awn home-page-icons-size pt-3"></i></b><br>
-            <span><b>Crop Listings</b></span><br>
-            <span>Farmers can list their produce with detailed information.</span>
+
+        <div class="col-12 col-md-4 mb-4">
+            <i class="fa-solid fa-wheat-awn home-page-icons-size d-block mb-2"></i>
+            <strong>Crop Listings</strong><br>
+            <small>Farmers can list their produce with detailed information.</small>
         </div>
-        <div class="col-md-4 col-sm-4 text-center">
-            <b><i class="bi bi-shield-check home-page-icons-size"></i></b><br>
-            <span><b>Secure Payments</b></span><br>
-            <span>Ensuring safe and easy transactions for all users.</span>
+
+        <div class="col-12 col-md-4 mb-4">
+            <i class="bi bi-shield-check home-page-icons-size d-block mb-2"></i>
+            <strong>Secure Payments</strong><br>
+            <small>Ensuring safe and easy transactions for all users.</small>
         </div>
     </div>
-    <!-- Feature Section Starts -->
 
 </div>

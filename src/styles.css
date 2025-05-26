@@ -28,3 +28,15 @@
 .home-page-icons-size {
     font-size: 40px;
 }
+/* Ensure the body takes up at least the full viewport height */
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow-y: auto;  /* Enables vertical scrolling when needed */
+}
+
+/* You can set a specific height for the container if needed */
+.container-fluid {
+    min-height: 100vh;  /* Ensures the container takes at least the full height of the viewport */
+    overflow-y: auto;  /* Ensures scrolling is possible if content overflows */
+}

@@ -1,40 +1,34 @@
-<div class="container-fluid app-backgroud-color">
+<div class="container-fluid app-backgroud-style">
 
     <!-- Header -->
     <div class="row align-items-center py-3 header-background-color text-center text-md-start">
-        <div class="col-12 col-md-4 text-center">
-            <h1>AGRI BID</h1>
+        <div class="col-12 col-md-4 text-center home-page-icons-size">AGRI BID
         </div>
 
         <div class="col-12 col-md-8 d-flex justify-content-center justify-content-md-end mt-3 mt-md-0 gap-4">
-            <h5 class="mb-0">Home</h5>
-            <h5 class="mb-0">About</h5>
-            <h5 class="mb-0">Contact</h5>
-            <h5 class="mb-0">
+            <div class="mb-0 fs-4">Home</div>
+            <div class="mb-0 fs-4">About</div>
+            <div class="mb-0 fs-4">Contact</div>
+            <div class="mb-0 fs-4">
                 <a routerLink="/login" class="anchor-tag-styling-desable">Login</a>
-            </h5>
+            </div>
         </div>
     </div>
 
     <!-- Hero Image Section -->
     <div class="home-page-image d-flex flex-column justify-content-center align-items-center text-center px-3 py-5">
-        <h2 class="display-6 mb-4">Empowering Farmers. Fair Prices. Transparent Bidding.</h2>
+        <!-- <h1 class="display-6 mb-4 text-color-1">Empowering Farmers. Fair Prices. Transparent Bidding.</h1> -->
 
         <div class="d-flex flex-wrap justify-content-center gap-3">
-            <button class="btn btn-success px-4 py-2">
-                <h5 class="mb-0">Register as Farmer</h5>
-            </button>
-            <button class="btn btn-light px-4 py-2">
-                <h5 class="mb-0">Register as Buyer</h5>
-            </button>
+            <button class="btn btn-success px-4 py-2" (click)="openFarmerRegistrationForm()">Register as Farmer</button>
+            <button class="btn btn-light px-4 py-2" (click)="openBuyerRegistrationForm()">Register as Buyer</button>
         </div>
     </div>
 
 
     <!-- Feature Section -->
     <div class="row text-center py-5">
-        <div class="col-12 mb-4">
-            <h2>Feature Section</h2>
+        <div class="col-12 mb-4">Feature Section
         </div>
 
         <div class="col-12 col-md-4 mb-4">
@@ -55,5 +49,4 @@
             <small>Ensuring safe and easy transactions for all users.</small>
         </div>
     </div>
-
 </div>

@@ -3,14 +3,19 @@ import { CommonModule } from '@angular/common';
 
 import { AgriBidHomeRoutingModule } from './agri-bid-home-routing.module';
 import { AgriBidHomePageComponent } from './agri-bid-home-page/agri-bid-home-page.component';
-import { AgriBidHeaderComponent } from './agri-bid-header/agri-bid-header.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import { FarmerRegistrationModelComponent } from './farmer-registration-model/farmer-registration-model.component';
+
 
 
 @NgModule({
-  declarations: [AgriBidHomePageComponent, AgriBidHeaderComponent],
+  declarations: [AgriBidHomePageComponent, FarmerRegistrationModelComponent],
   imports: [
     CommonModule,
-    AgriBidHomeRoutingModule
+    AgriBidHomeRoutingModule,
+    MatDialogModule,
+    FormsModule
   ]
 })
 export class AgriBidHomeModule { }

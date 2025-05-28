@@ -1,0 +1,53 @@
+<div class="app-backgroud-color" name="farmer-registration-form">
+    <div class="text-center fs-4 pt-2">Farmer Registration</div>
+    <form #registrationForm="ngForm" class="p-3">
+        <!-- Name -->
+        <div class="form-group mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Enter your name" [(ngModel)]="farmer.name" required />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !farmer.name">
+                Name is required
+            </div>
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="form-group mb-3">
+            <label>Mobile Number</label>
+            <input type="tel" class="form-control" name="mobile" placeholder="Enter your mobile number" [(ngModel)]="farmer.mobileNumber" pattern="^[0-9]{10}$"
+                required #mobileInput="ngModel" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !farmer.mobileNumber">
+                Mobile number is required
+            </div>
+            <div class="text-danger" *ngIf="farmer.mobileNumber && !mobileInput.valid">
+                Enter a valid 10-digit number
+            </div>
+        </div>
+
+        <!-- Gmail -->
+        <div class="form-group mb-3">
+            <label>Gmail</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter your email" [(ngModel)]="farmer.email" required
+                #emailInput="ngModel" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !emailInput.valid">
+                A valid email is required
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter password" [(ngModel)]="farmer.password" required
+                minlength="6" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !farmer.password">
+                Password is required
+            </div>
+        </div>
+
+
+        <button [disabled]="!registrationForm.valid" (click)="resetFarmerRegistration()"
+            class="btn btn-primary float-end mb-2">Reset</button>
+        <!-- Submit Button -->
+        <button [disabled]="!registrationForm.valid" (click)="onSubmitFarmerRegistration()"
+            class="btn btn-primary float-end mb-2 me-2">Register</button>
+    </form>
+</div>

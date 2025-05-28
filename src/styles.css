@@ -1,12 +1,17 @@
 /* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
-.app-backgroud-color {
+:root {
+    --primary-background-color: #f8f0e1;
+  }  
+.app-backgroud-style {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: #f8f0e1;
+    background-color: var(--primary-background-color);
+}
+.app-backgroud-color {
+    background-color: var(--primary-background-color);
 }
 
 .header-background-color {
@@ -18,25 +23,37 @@
     text-decoration: none;
     color: #212529;
 }
+
 .text-size {
     font-size: 80px;
 }
+
 .button-stylign-1 {
     color: #ffffff;
     background-color: #394f2c;
 }
+
 .home-page-icons-size {
     font-size: 40px;
 }
+
 /* Ensure the body takes up at least the full viewport height */
-body, html {
+body,
+html {
     height: 100%;
     margin: 0;
-    overflow-y: auto;  /* Enables vertical scrolling when needed */
+    overflow-y: auto;
+    /* Enables vertical scrolling when needed */
 }
 
 /* You can set a specific height for the container if needed */
 .container-fluid {
-    min-height: 100vh;  /* Ensures the container takes at least the full height of the viewport */
-    overflow-y: auto;  /* Ensures scrolling is possible if content overflows */
+    min-height: 100vh;
+    /* Ensures the container takes at least the full height of the viewport */
+    overflow-y: auto;
+    /* Ensures scrolling is possible if content overflows */
+}
+
+.text-color-1 {
+    color: #394f2c;
 }

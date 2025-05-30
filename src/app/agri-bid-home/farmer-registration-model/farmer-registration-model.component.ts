@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FarmerDto } from '../entity/farmerDto';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Environmet } from '../../../environments/environment';
+import { FarmerRegistrationModelService } from './farmer-registration-model.service';
 @Component({
   selector: 'app-farmer-registration-model',
   standalone: false,
@@ -10,19 +10,29 @@ import { Environmet } from '../../../environments/environment';
 })
 export class FarmerRegistrationModelComponent {
 
-  private apiUrl = Environmet.apiUrl;
-
-  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>) {
-
-  }
   farmer: FarmerDto = new FarmerDto();
+  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService) { }
 
   onSubmitFarmerRegistration() {
-    console.log(this.apiUrl);
+    this.farmerRegService.saveFarmerRegisterData(this.farmer).subscribe({
+      next: (data) => {
+        console.log('Response:', data);
+      },
+      error: (error) => {
+        console.error('Error:', error);
+      },
+      complete: () => {
+        console.info('Registration completed successfully');
+      }
+    });
 
     setTimeout(() => {
-      this.dialogRef.close();
+      this.closeRegistrationModel();
     }, 100);
+  }
+
+  closeRegistrationModel() {
+    this.dialogRef.close();
   }
 
   resetFarmerRegistration() {

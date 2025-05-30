@@ -6,6 +6,7 @@ import { AgriBidHomePageComponent } from './agri-bid-home-page/agri-bid-home-pag
 import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FarmerRegistrationModelComponent } from './farmer-registration-model/farmer-registration-model.component';
+import { FarmerRegistrationModelService } from './farmer-registration-model/farmer-registration-model.service';
 
 
 
@@ -16,6 +17,7 @@ import { FarmerRegistrationModelComponent } from './farmer-registration-model/fa
     AgriBidHomeRoutingModule,
     MatDialogModule,
     FormsModule
-  ]
+  ],
+  providers: [FarmerRegistrationModelService]
 })
 export class AgriBidHomeModule { }

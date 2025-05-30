@@ -1,10 +1,12 @@
+import { HttpClientModule } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { AgriBidHomeModule } from './agri-bid-home/agri-bid-home.module';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HttpClientModule, AgriBidHomeModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

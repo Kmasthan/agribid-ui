@@ -1,5 +1,13 @@
 <div class="app-backgroud-color" name="farmer-registration-form">
-    <div class="text-center fs-4 pt-2">Farmer Registration</div>
+    <div class="row">
+        <div class="col-md-12">
+            <i class="bi bi-x-square-fill float-end pe-2" (click)="closeRegistrationModel()"></i>
+        </div>
+        <div class="col-md-12 text-center fs-4 pt-2">
+            Farmer Registration
+        </div>
+    </div>
+   
     <form #registrationForm="ngForm" class="p-3">
         <!-- Name -->
         <div class="form-group mb-3">

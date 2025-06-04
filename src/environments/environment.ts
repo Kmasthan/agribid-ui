@@ -1,4 +1,4 @@
 export class Environmet {
    static production = false;
-   static apiUrl = 'http://localhost:8082';
+   static apiUrl = 'http://localhost:8082/agri-bid';
 }

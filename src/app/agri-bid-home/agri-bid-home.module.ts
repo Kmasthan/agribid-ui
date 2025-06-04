@@ -7,17 +7,24 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { FarmerRegistrationModelComponent } from './farmer-registration-model/farmer-registration-model.component';
 import { FarmerRegistrationModelService } from './farmer-registration-model/farmer-registration-model.service';
+import { BuyerRegistrationModelService } from './buyer-registration-model/buyer-registration-model.service';
+import { BuyerRegistrationModelComponent } from './buyer-registration-model/buyer-registration-model.component';
+import {MatButtonToggleModule} from '@angular/material/button-toggle';
+import { UserLoginPageModelComponent } from './user-login-page-model/user-login-page-model.component';
+import { UserLoginPageModelService } from './user-login-page-model/user-login-page-model.service';
+
 
 
 
 @NgModule({
-  declarations: [AgriBidHomePageComponent, FarmerRegistrationModelComponent],
+  declarations: [AgriBidHomePageComponent, FarmerRegistrationModelComponent, BuyerRegistrationModelComponent, UserLoginPageModelComponent],
   imports: [
     CommonModule,
     AgriBidHomeRoutingModule,
     MatDialogModule,
-    FormsModule
+    FormsModule, 
+    MatButtonToggleModule
   ],
-  providers: [FarmerRegistrationModelService]
+  providers: [FarmerRegistrationModelService, BuyerRegistrationModelService, UserLoginPageModelService]
 })
 export class AgriBidHomeModule { }

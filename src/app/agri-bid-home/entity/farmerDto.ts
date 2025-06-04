@@ -1,4 +1,5 @@
 export class FarmerDto {
+    id!: string;
     name!: string;
     mobileNumber!: string;
     email!: string;
@@ -7,4 +8,5 @@ export class FarmerDto {
     district!: string;
     mandal!: string;
     village!: string;
+    userType!: string;
 }

@@ -10,6 +10,6 @@ export class FarmerRegistrationModelService {
   constructor(private dataService: DataService) { }
 
   saveFarmerRegisterData(farmer: FarmerDto) {
-    return  this.dataService.postData("agri-bid/save-farmer", farmer);
+    return  this.dataService.postData("user/save-farmer", farmer);
   }
 }

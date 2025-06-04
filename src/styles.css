@@ -1,7 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 :root {
     --primary-background-color: #f8f0e1;
-  }  
+}
+
 .app-backgroud-style {
     position: fixed;
     top: 0;
@@ -10,6 +11,7 @@
     bottom: 0;
     background-color: var(--primary-background-color);
 }
+
 .app-backgroud-color {
     background-color: var(--primary-background-color);
 }
@@ -57,3 +59,10 @@ html {
 .text-color-1 {
     color: #394f2c;
 }
+
+.center-toggle-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+  

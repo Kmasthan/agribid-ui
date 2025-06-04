@@ -6,12 +6,12 @@
         </div>
 
         <div class="col-12 col-md-8 d-flex justify-content-center justify-content-md-end mt-3 mt-md-0 gap-4">
-            <div class="mb-0 fs-4">Home</div>
-            <div class="mb-0 fs-4">About</div>
-            <div class="mb-0 fs-4">Contact</div>
-            <div class="mb-0 fs-4">
-                <a routerLink="/login" class="anchor-tag-styling-desable">Login</a>
+            <div class="mb-0 fs-4 btn">
+                <a routerLink="/" class="anchor-tag-styling-desable">Home</a>
             </div>
+            <div class="mb-0 fs-4 btn">About</div>
+            <div class="mb-0 fs-4 btn">Contact</div>
+            <div class="mb-0 fs-4 btn" (click)="openUserLoginPage()">Login</div>
         </div>
     </div>
 
@@ -28,7 +28,7 @@
 
     <!-- Feature Section -->
     <div class="row text-center py-5">
-        <div class="col-12 mb-4">Feature Section
+        <div class="col-12 mb-4 fs-2">Feature Section
         </div>
 
         <div class="col-12 col-md-4 mb-4">

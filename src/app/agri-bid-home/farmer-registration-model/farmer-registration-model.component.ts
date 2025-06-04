@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FarmerDto } from '../entity/farmerDto';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FarmerRegistrationModelService } from './farmer-registration-model.service';
+import { UserTypes } from '../entity/userTypes';
 @Component({
   selector: 'app-farmer-registration-model',
   standalone: false,
@@ -14,6 +15,7 @@ export class FarmerRegistrationModelComponent {
   constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService) { }
 
   onSubmitFarmerRegistration() {
+    this.farmer.userType = UserTypes[UserTypes.FARMER];
     this.farmerRegService.saveFarmerRegisterData(this.farmer).subscribe({
       next: (data) => {
         console.log('Response:', data);

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Environmet } from '../environments/environment';
@@ -15,11 +15,39 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   // postData() is to perform the @POST request
-  postData(path: string, data: any): Observable<any> {
+  postData(path: string, object: any): Observable<any> {
     const url = `${Environmet.apiUrl}/${path}`;
-    return this.httpClient.post(url, data).pipe(
+    return this.httpClient.post(url, object).pipe(
       map((response) => response),
       catchError(this.handleError)
     );
+  }
+
+  // postMethodToGetTheData() is to get the Data using POST request for security purpose
+  postMethodToGetTheData(path: string, object: any): Observable<any> {
+    const url = `${Environmet.apiUrl}/${path}`;
+    return this.httpClient.post(url, object).pipe(
+      map((response) => response),
+      catchError(this.handleError)
+    );
+  }
+
+
+  // getObjectsWithPath() is to get the Data using GET request
+  getObjects(path: string, params: HttpParams): Observable<any> {
+    const url = `${Environmet.apiUrl}/${path}`;
+    return this.httpClient.get(url, {params}).pipe(
+      map((response) => response),
+      catchError(this.handleError)
+    )
+  }
+
+  // getObjectsWithPath() is to get the Data using GET request
+  getObjectsWithPath(path: string): Observable<any> {
+    const url = `${Environmet.apiUrl}/${path}`;
+    return this.httpClient.get(url).pipe(
+      map((response) => response),
+      catchError(this.handleError)
+    )
   }
 }

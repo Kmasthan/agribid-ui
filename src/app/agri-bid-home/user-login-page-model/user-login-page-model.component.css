@@ -1,0 +1,4 @@
+::ng-deep .login-toggle-button .mat-button-toggle.mat-button-toggle-checked {
+    background-color: #198754 !important;
+    color: white !important;
+}

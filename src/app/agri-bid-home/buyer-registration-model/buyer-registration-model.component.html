@@ -1,1 +1,59 @@
-<p>buyer-registration-model works!</p>
+<div class="app-backgroud-color" name="buyer-registration-form">
+    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeRegistrationModel()"></i></div>
+    <div class="row">
+        <div class="col-md-12 text-center fs-4 pt-2">
+            Buyer Registration
+        </div>
+    </div>
+   
+    <form #registrationForm="ngForm" class="p-3">
+        <!-- Name -->
+        <div class="form-group mb-3">
+            <label>Name</label>
+            <input type="text" class="form-control" name="name" placeholder="Enter your name" [(ngModel)]="buyer.name" required />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.name">
+                Name is required
+            </div>
+        </div>
+
+        <!-- Mobile Number -->
+        <div class="form-group mb-3">
+            <label>Mobile Number</label>
+            <input type="tel" class="form-control" name="mobile" placeholder="Enter your mobile number" [(ngModel)]="buyer.mobileNumber" pattern="^[0-9]{10}$"
+                required #mobileInput="ngModel" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.mobileNumber">
+                Mobile number is required
+            </div>
+            <div class="text-danger" *ngIf="buyer.mobileNumber && !mobileInput.valid">
+                Enter a valid 10-digit number
+            </div>
+        </div>
+
+        <!-- Gmail -->
+        <div class="form-group mb-3">
+            <label>Gmail</label>
+            <input type="email" class="form-control" name="email" placeholder="Enter your email" [(ngModel)]="buyer.email" required
+                #emailInput="ngModel" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !emailInput.valid">
+                A valid email is required
+            </div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group mb-3">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password" placeholder="Enter password" [(ngModel)]="buyer.password" required
+                minlength="6" />
+            <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.password">
+                Password is required
+            </div>
+        </div>
+
+
+        <button [disabled]="!registrationForm.valid" (click)="resetBuyerRegistration()"
+            class="btn btn-primary float-end mb-2">Reset</button>
+        <!-- Submit Button -->
+        <button [disabled]="!registrationForm.valid" (click)="onSubmitBuyerRegistration()"
+            class="btn btn-primary float-end mb-2 me-2">Register</button>
+    </form>
+</div>

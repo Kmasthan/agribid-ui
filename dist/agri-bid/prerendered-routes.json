@@ -1,6 +1,13 @@
 {
   "routes": [
     "/",
-    "/login"
+    "/user",
+    "/user/buyer",
+    "/user/buyer/dashboard",
+    "/user/crop-listings",
+    "/user/dashboard",
+    "/user/farmer",
+    "/user/farmer/crop-listings",
+    "/user/farmer/dashboard"
   ]
 }

@@ -1,62 +1,97 @@
-/* app.component.css */
-
 :host {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  /* Header styling */
-  .header {
-    background-color: #e8d5b0;
-    padding: 1rem;
-    font-size: 1.5rem;
-    height: 60px; /* Adjust based on header height */
-    display: flex;
-  }
-  
-  /* Side navigation styling */
+  --content-background-color: #f8f0e1;
+}
+
+app.component.css:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header styling */
+.header {
+  background-color: #e8d5b0;
+  padding: 1rem;
+  font-size: 1.5rem;
+  height: 60px;
+  /* Adjust based on header height */
+  display: flex;
+}
+
+/* Side navigation styling */
+.sidenav {
+  width: 250px;
+  /* Fixed width for the sidebar */
+  background-color: #576c35;
+  position: fixed;
+  top: 60px;
+  /* Push the sidenav down below the header */
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  z-index: 10;
+  /* Ensures sidenav stays on top of content */
+}
+
+.sidenav nav {
+  overflow-y: auto;
+  /* Enables scrolling */
+}
+
+.sidenav nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidenav nav ul li {
+  margin: 0.5rem 0;
+}
+
+.sidenav a {
+  text-decoration: none;
+  color: white !important;
+  font-weight: bold;
+}
+
+.sidenav a.active {
+  text-decoration: underline;
+}
+
+/* Main content styling */
+.content {
+  margin-left: 240px;
+  /* Leave space for the side nav */
+  padding: 1rem;
+  flex: 1;
+  background-color: var(--content-background-color);
+  height: calc(100vh - 60px);
+  /* Adjust for the header height */
+  overflow-y: auto;
+  /* Make content scrollable */
+}
+
+.nav-item.active a {
+  /* light greenish background */
+  background-color: var(--content-background-color);
+
+  /* darker text for contrast */
+  color: #2e4d1f !important;          
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+
+/* MOBILE: hide sidebar */
+@media (max-width: 768px) {
   .sidenav {
-    width: 250px; /* Fixed width for the sidebar */
-    background-color: #576c35;
-    position: fixed;
-    top: 60px; /* Push the sidenav down below the header */
-    bottom: 0;
-    left: 0;
-    padding: 1rem;
-    z-index: 10; /* Ensures sidenav stays on top of content */
+    transform: translateX(-100%);
   }
 
-  .sidenav nav {
-    overflow-y: auto; /* Enables scrolling */
+  .sidenav.open {
+    transform: translateX(0);
   }
-  
-  .sidenav nav ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .sidenav nav ul li {
-    margin: 0.5rem 0;
-  }
-  
-  .sidenav a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-  }
-  
-  .sidenav a.active {
-    text-decoration: underline;
-  }
-  
-  /* Main content styling */
+
   .content {
-    margin-left: 240px; /* Leave space for the side nav */
-    padding: 1rem;
-    flex: 1;
-    background-color: #f8f0e1;
-    height: calc(100vh - 60px); /* Adjust for the header height */
-    overflow-y: auto; /* Make content scrollable */
+    margin-left: 0;
   }
-  
+}

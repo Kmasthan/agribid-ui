@@ -29,6 +29,8 @@ export class UserLoginPageModelComponent {
   farmer: FarmerDto = new FarmerDto();
   buyer: BuyerDto = new BuyerDto();
 
+  loginErrorMsg: string = '';
+
   constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private userLoginPageService: UserLoginPageModelService,
     private localStorageService: LocalStorageService, private router: Router) { }
 
@@ -42,11 +44,11 @@ export class UserLoginPageModelComponent {
           this.router.navigate(['/user']);
       },
       error: (error) => {
-        console.log("Error: ", error);
+        this.loginErrorMsg = error.message;
         this.disableLogin = false;
       },
       complete: () => {
-        console.log("");
+        console.log("User Login Succesfull");
       }
     })
   }

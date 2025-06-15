@@ -4,6 +4,9 @@ import { FarmerRegistrationModelComponent } from '../farmer-registration-model/f
 import { BuyerRegistrationModelService } from './buyer-registration-model.service';
 import { BuyerDto } from '../entity/buyerDto';
 import { UserTypes } from '../entity/userTypes';
+import { LocalStorageService } from '../../local-storage.servive';
+import { Router } from '@angular/router';
+import { SprinnerLoadingService } from '../../spinner-loading.service';
 
 @Component({
   selector: 'app-buyer-registration-model',
@@ -14,25 +17,40 @@ import { UserTypes } from '../entity/userTypes';
 export class BuyerRegistrationModelComponent {
 
   buyer: BuyerDto = new BuyerDto();
-  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private buyerRegService: BuyerRegistrationModelService) { }
+
+  registrationMessage!: string;
+  isRegistrationError: boolean = false;
+
+  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private buyerRegService: BuyerRegistrationModelService,
+    private localStorageService: LocalStorageService, private router: Router, private spinnerLoadingService: SprinnerLoadingService
+  ) { }
 
   onSubmitBuyerRegistration() {
     this.buyer.userType = UserTypes[UserTypes.BUYER];
     this.buyerRegService.saveBuyerRegisterData(this.buyer).subscribe({
-      next: (data) => {
-        console.log('Response:', data);
+      next: (response) => {
+        // To show the success message in registration model
+        this.isRegistrationError = false;
+        this.registrationMessage = response.message;
+
+        this.spinnerLoadingService.setLoading(true);
+        setTimeout(() => {
+          this.closeRegistrationModel();
+          // To store the LoggedIn user in LocalStorage
+          this.localStorageService.setLoggedInUser(JSON.stringify(response.data));
+          // navigate to User page
+          this.router.navigate(['/user']);
+          this.spinnerLoadingService.setLoading(false);
+        }, 3000)
       },
       error: (error) => {
-        console.error('Error:', error);
+        this.isRegistrationError = true;
+        this.registrationMessage = error.message;
       },
       complete: () => {
         console.info('Registration completed successfully');
       }
     });
-
-    setTimeout(() => {
-      this.closeRegistrationModel();
-    }, 100);
   }
 
   closeRegistrationModel() {

@@ -29,7 +29,7 @@
             <label class="fs-5">Email or Phone</label>
             <input type="text" class="form-control" name="emailOrPhone" placeholder="Enter your email or phone number"
                 [(ngModel)]="loginDto.userName" #emailOrPhoneInput="ngModel"
-                [pattern]="'^((\\+91-?)|0)?[6-9][0-9]{9}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'" required />
+                [pattern]="'^((\\+91-?)|0)?[0-9]{10}$|^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$'" required />
             <div class="text-danger" *ngIf="loginForm.submitted && !emailOrPhoneInput.valid">
                 Please enter a valid email address or mobile number.
             </div>

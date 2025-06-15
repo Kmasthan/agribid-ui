@@ -1,1 +1,107 @@
-<p>new-crop-listing-model works!</p>
+<div class="app-backgroud-color" name="farmer-registration-form">
+    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeAddNewCropFormModel()"></i>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center fs-4 pt-2">
+            Add New Crop
+        </div>
+        <!-- <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isRegistrationError ? 'text-danger' : 'text-success'">
+            {{registrationMsg}}
+        </div> -->
+    </div>
+
+    <form #addNewCropForm="ngForm" class="p-3">
+
+        <div class="form-group d-flex justify-content-around">
+            <!-- State Dropdown -->
+            <mat-form-field appearance="fill" class="w-50">
+                <mat-label>Country</mat-label>
+                <mat-select [(ngModel)]="newCrop.country" name="country"
+                    (selectionChange)="getStatesList(newCrop.country)" required>
+                    <mat-option>
+                        <ngx-mat-select-search [(ngModel)]="searchedCountry" placeholderLabel="Search country"
+                            noEntriesFoundLabel="not found" name="countrySearch"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let country of countrisList" [value]="country">{{ country }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+
+            <!-- State Dropdown -->
+            <mat-form-field appearance="fill" class="w-50">
+                <mat-label>State</mat-label>
+                <mat-select [(ngModel)]="newCrop.state" [disabled]="!newCrop.country"
+                    (selectionChange)="getDistrictsList(newCrop.country, newCrop.state)" name="state" required>
+                    <mat-option>
+                        <ngx-mat-select-search [(ngModel)]="serachedState" placeholderLabel="Search state"
+                            name="stateSearch"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let state of statesList" [value]="state">{{ state }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group d-flex justify-content-around">
+            <!-- District Dropdown -->
+            <mat-form-field appearance="fill" class="w-50">
+                <mat-label>District</mat-label>
+                <mat-select [(ngModel)]="newCrop.district" [disabled]="!newCrop.state"
+                    (selectionChange)="getVillagesList(newCrop.country, newCrop.state, newCrop.district)"
+                    name="district" required>
+                    <mat-option>
+                        <ngx-mat-select-search [(ngModel)]="searchedDistrict" placeholderLabel="Serach district"
+                            name="districtSearch"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let district of districtsList" [value]="district">{{ district }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Village Dropdown -->
+            <mat-form-field appearance="fill" class="w-50">
+                <mat-label>Village</mat-label>
+                <mat-select [(ngModel)]="newCrop.village" [disabled]="!newCrop.district" name="village" required>
+                    <mat-option>
+                        <ngx-mat-select-search [(ngModel)]="searchedVillage" placeholderLabel="Serach village"
+                            name="villageSearch"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let village of villagesList" [value]="village">{{ village }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <!-- Crop Name -->
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Crop Name</mat-label>
+                <input matInput [(ngModel)]="newCrop.cropName" name="cropName" required>
+            </mat-form-field>
+        </div>
+
+        <!-- Weight -->
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Weight</mat-label>
+                <input matInput [(ngModel)]="newCrop.weight" name="weight" required>
+            </mat-form-field>
+        </div>
+
+        <!-- Quality -->
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Quality</mat-label>
+                <input matInput [(ngModel)]="newCrop.quality" name="quality" required>
+            </mat-form-field>
+        </div>
+
+        <!-- Status -->
+        <div class="form-group">
+            <mat-form-field appearance="fill" class="w-100">
+                <mat-label>Status</mat-label>
+                <input matInput [(ngModel)]="newCrop.status" name="status" required>
+            </mat-form-field>
+        </div>
+
+        <button class="btn btn btn-success" [disabled]="!addNewCropForm.valid"
+            (click)="addNewCropToListings()">Submit</button>
+    </form>
+</div>

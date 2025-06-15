@@ -7,11 +7,11 @@
 
 <div class="row pb-4">
     <div class="col-md-12 col-sm-12">
-        <button class="btn btn-success float-end"><i class="fa-solid fa-plus"></i>&nbsp;Add new crop</button>
+        <button class="btn btn-success float-end" (click)="addNewCrop()"><i class="fa-solid fa-plus"></i>&nbsp;Add New Crop</button>
     </div>
 </div>
 
-<div class="mat-elevation-z8">
+<div class="mat-elevation-z8" *ngIf="dataSource.data && dataSource.data.length > 0; else noCrpListings">
     <table class="w-100" mat-table [dataSource]="dataSource">
 
         <!-- Position Column -->
@@ -45,3 +45,7 @@
     <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
+
+<ng-template #noCrpListings>
+    <div class="text-center fs-5">Start adding your crops today and let others discover them, click on&nbsp;<strong>"Add New Crop"</strong></div>
+</ng-template>

@@ -1,4 +1,7 @@
 import {
+  SelectionModel
+} from "./chunk-6DYK52CI.js";
+import {
   NG_VALUE_ACCESSOR
 } from "./chunk-HTZ36MZ2.js";
 import {
@@ -6,9 +9,8 @@ import {
   MatCommonModule,
   MatPseudoCheckbox,
   MatRipple,
-  MatRippleModule,
-  SelectionModel
-} from "./chunk-6664UEM5.js";
+  MatRippleModule
+} from "./chunk-IYI3TVBI.js";
 import "./chunk-APQJ6POP.js";
 import {
   Attribute,

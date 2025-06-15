@@ -5,6 +5,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CropListings } from '../entity/crop-listing-dto';
 import { FarmerDto } from '../../../agri-bid-home/entity/farmerDto';
 import { LocalStorageService } from '../../../local-storage.servive';
+import { MatDialog } from '@angular/material/dialog';
+import { NewCropListingModelComponent } from './new-crop-listing-model/new-crop-listing-model.component';
 
 @Component({
   selector: 'app-crop-listings',
@@ -19,7 +21,9 @@ export class CropListingsComponent {
 
   user: FarmerDto = new FarmerDto();
 
-  constructor(private cropListingService: CropListingsService, private localStorageService: LocalStorageService) { }
+  constructor(private cropListingService: CropListingsService, private localStorageService: LocalStorageService,
+    private model: MatDialog
+  ) { }
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -45,6 +49,14 @@ export class CropListingsComponent {
       complete: () => {
 
       }
+    })
+  }
+
+  addNewCrop() {
+    this.model.open(NewCropListingModelComponent, {
+      width: '600px',
+      disableClose: true,
+      data: {}
     })
   }
 

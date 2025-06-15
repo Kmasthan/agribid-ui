@@ -4,18 +4,29 @@ import { CommonModule } from '@angular/common';
 import { AgriBidFarmerPageRoutingModule } from './agri-bid-farmer-page-routing.module';
 import { CropListingsService } from './crop-listings/crop-listings.service';
 import { CropListingsComponent } from './crop-listings/crop-listings.component';
-import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import { MatTableModule} from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { NewCropListingModelComponent } from './crop-listings/new-crop-listing-model/new-crop-listing-model.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatInputModule } from '@angular/material/input'
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 
 
 
 @NgModule({
-  declarations: [CropListingsComponent],
+  declarations: [CropListingsComponent, NewCropListingModelComponent],
   imports: [
     CommonModule,
     AgriBidFarmerPageRoutingModule,
     MatTableModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    FormsModule,
+    NgxMatSelectSearchModule
   ],
   providers: [CropListingsService]
 })

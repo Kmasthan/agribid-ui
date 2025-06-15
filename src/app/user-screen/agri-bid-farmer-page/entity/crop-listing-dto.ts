@@ -1,5 +1,6 @@
 export class CropListings {
     id!: string
+    country!: string;
     state!: string
     district!: string
     village!: string

@@ -3,6 +3,9 @@ import { FarmerDto } from '../entity/farmerDto';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FarmerRegistrationModelService } from './farmer-registration-model.service';
 import { UserTypes } from '../entity/userTypes';
+import { Router } from '@angular/router';
+import { LocalStorageService } from '../../local-storage.servive';
+import { SprinnerLoadingService } from '../../spinner-loading.service';
 @Component({
   selector: 'app-farmer-registration-model',
   standalone: false,
@@ -12,25 +15,40 @@ import { UserTypes } from '../entity/userTypes';
 export class FarmerRegistrationModelComponent {
 
   farmer: FarmerDto = new FarmerDto();
-  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService) { }
+
+  registrationMsg!: string;
+  isRegistrationError: boolean = false;
+
+  constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService,
+    private router: Router, private localStorageService: LocalStorageService, private spinnerLoadingService: SprinnerLoadingService
+  ) { }
 
   onSubmitFarmerRegistration() {
     this.farmer.userType = UserTypes[UserTypes.FARMER];
     this.farmerRegService.saveFarmerRegisterData(this.farmer).subscribe({
-      next: (data) => {
-        console.log('Response:', data);
+      next: (response) => {
+        // To show the success message in registration model
+        this.isRegistrationError = false;
+        this.registrationMsg = response.message;
+
+        this.spinnerLoadingService.setLoading(true);
+        setTimeout(() => {
+          this.closeRegistrationModel();
+          // To store the LoggedIn user in LocalStorage
+          this.localStorageService.setLoggedInUser(JSON.stringify(response.data))
+          // navigate to User page
+          this.router.navigate(['/user']);
+          this.spinnerLoadingService.setLoading(false);
+        }, 3000);
       },
       error: (error) => {
-        console.error('Error:', error);
+        this.isRegistrationError = true;
+        this.registrationMsg = error.message;
       },
       complete: () => {
         console.info('Registration completed successfully');
       }
     });
-
-    setTimeout(() => {
-      this.closeRegistrationModel();
-    }, 100);
   }
 
   closeRegistrationModel() {
@@ -39,5 +57,6 @@ export class FarmerRegistrationModelComponent {
 
   resetFarmerRegistration() {
     this.farmer = new FarmerDto();
+    this.registrationMsg = '';
   }
 }

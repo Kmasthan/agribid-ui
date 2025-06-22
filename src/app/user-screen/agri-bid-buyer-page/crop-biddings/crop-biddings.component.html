@@ -1,0 +1,149 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active text-dark" aria-current="page"><i
+                class="fa-solid fa-hand-holding-dollar"></i>&nbsp;&nbsp;Crop Bidding</li>
+    </ol>
+</nav>
+
+<div class="row ps-3">
+    <div class="col-sm-12 col-md-12">
+        <!-- Country Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>Country</mat-label>
+            <mat-select [(ngModel)]="selectedCountry" name="country" (selectionChange)="getStatesList(selectedCountry)"
+                required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedCountry" placeholderLabel="Search country"
+                        noEntriesFoundLabel="No options found" name="countrySearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let country of countrisList | regionDatafilter : searchedCountry"
+                    [value]="country">{{ country }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <!-- State Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>State</mat-label>
+            <mat-select [(ngModel)]="selectedState" [disabled]="!selectedCountry"
+                (selectionChange)="getDistrictsList(selectedCountry, selectedState)" name="state" required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="serachedState" placeholderLabel="Search state"
+                        noEntriesFoundLabel="No options found" name="stateSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let state of statesList | regionDatafilter : serachedState" [value]="state">{{
+                    state }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- District Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>District</mat-label>
+            <mat-select [(ngModel)]="selectedDistrict" [disabled]="!selectedState"
+                (selectionChange)="getVillagesList(selectedCountry, selectedState, selectedDistrict)" name="district"
+                required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedDistrict" placeholderLabel="Serach district"
+                        noEntriesFoundLabel="No options found" name="districtSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let district of districtsList | regionDatafilter : searchedDistrict"
+                    [value]="district">{{ district }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Village Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>Village</mat-label>
+            <mat-select [(ngModel)]="selectedVillage" [disabled]="!selectedDistrict"
+                (selectionChange)="getVillagesList(selectedCountry, selectedState, selectedDistrict)" name="village"
+                required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedVillage" placeholderLabel="Serach village"
+                        noEntriesFoundLabel="No options found" name="villageSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let village of villagesList | regionDatafilter : searchedVillage"
+                    [value]="village">{{ village }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<!-- Bidding Crops table start-->
+<div class="row ps-4 table-responsive">
+    <div class="col-md-6 col-sm-6 p-0 me-4">
+        <table class="table mb-0" *ngIf="biddingCropsList && biddingCropsList.length > 0; else biddingCropsNotFound">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#Sl.No</th>
+                    <th scope="col">Crop&nbsp;Name</th>
+                    <th scope="col">Weight</th>
+                    <th scope="col">Quality</th>
+                    <th scope="col" class="text-center">View&nbsp;/&nbsp;Place&nbsp;Bid</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- <ng-container > -->
+                <tr *ngFor="let biddingCrop of biddingCropsList; index as i">
+                    <th scope="row">{{ i + 1 }}</th>
+                    <td>{{ biddingCrop?.cropData?.cropName }}</td>
+                    <td>{{ biddingCrop?.cropData?.weight }}&nbsp;{{ biddingCrop?.cropData?.measure }}</td>
+                    <td>{{ biddingCrop?.cropData?.quality }}</td>
+                    <td class="text-center">
+                        <i class="fa-solid fa-circle-right fs-3"
+                            [ngClass]="selectedCropIndex == i ? 'text-warning' : 'text-success'" role="button"
+                            (click)="viewOrPlaceBidForCrop(biddingCrop, i)"></i>
+                    </td>
+                </tr>
+            </tbody>
+
+
+        </table>
+        <ng-template #biddingCropsNotFound>
+            <div class="float-end fs-3">
+                No crops listed for bidding in the selected region.
+            </div>
+        </ng-template>
+    </div>
+    <div class="col-md-5 col-sm-5 border border-succes" *ngIf="isShowBiddingForm">
+        <div class="row pb-1 border-bottom">
+            <div class="col-md-4 col-sm-4"></div>
+            <div class="col-md-4 col-sm-4 text-center fs-5">
+                <span class="align-middle"><strong>Crop Bids</strong></span>
+            </div>
+            <div class="col-md-4 col-sm-4">
+                <button class="btn btn-success float-end me-3" [disabled]="isBidPlacedAlredy"
+                    (click)="placeYourBid(undefined)"><i class="fa-solid fa-circle-plus"></i>&nbsp;<b>Place
+                        Bid</b></button>
+            </div>
+        </div>
+        <table class="table" *ngIf="cropBidsDetails && cropBidsDetails.length > 0; else noBidsFound">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">#Rank&nbsp;/&nbsp;Position</th>
+                    <th scope="col">Bid&nbsp;Amount</th>
+                    <th scope="col">Bid Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr [ngClass]="bid.buyerId == user.id ? 'border border-success' : ''"
+                    *ngFor="let bid of cropBidsDetails; index as i">
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{bid.bidAmount}}&nbsp;{{bid.currency}}
+                        <span *ngIf="bid.buyerId == user.id">
+                            &nbsp;&nbsp;<i class="fa-solid fa-pen fs-5 text-success" role="button"
+                                (click)="editYourBid(bid)"></i>
+                        </span>
+                    </td>
+                    <td>{{bid.createdAt}}</td>
+                </tr>
+                <tr>
+            </tbody>
+        </table>
+
+        <ng-template #noBidsFound>
+            <div class="text-center fs-5 mt-4">
+                No bids for this crop yet, click on&nbsp;<strong>"Place Bid"</strong>.</div>
+        </ng-template>
+    </div>
+</div>
+<!-- Bidding Crops table end-->

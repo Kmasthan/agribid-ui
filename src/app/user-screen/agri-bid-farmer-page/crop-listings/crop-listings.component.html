@@ -7,11 +7,13 @@
 
 <div class="row pb-4">
     <div class="col-md-12 col-sm-12">
-        <button class="btn btn-success float-end" (click)="addNewCrop()"><i class="fa-solid fa-plus"></i>&nbsp;Add New Crop</button>
+        <button class="btn btn-success float-end" (click)="addNewCrop(undefined)"><i
+                class="fa-solid fa-plus"></i>&nbsp;Add New
+            Crop</button>
     </div>
 </div>
 
-<div class="mat-elevation-z8" *ngIf="dataSource.data && dataSource.data.length > 0; else noCrpListings">
+<div class="mat-elevation-z8 table-responsive" [hidden]="!dataSource.data || dataSource.data.length <= 0">
     <table class="w-100" mat-table [dataSource]="dataSource">
 
         <!-- Position Column -->
@@ -26,26 +28,47 @@
             <td mat-cell *matCellDef="let element"> {{element.cropName}} </td>
         </ng-container>
 
+        <!-- Place Column -->
+        <ng-container matColumnDef="place">
+            <th mat-header-cell *matHeaderCellDef> Place </th>
+            <td mat-cell *matCellDef="let element"> {{element.village}} </td>
+        </ng-container>
+
         <!-- Weight Column -->
         <ng-container matColumnDef="weight">
             <th mat-header-cell *matHeaderCellDef> Weight </th>
-            <td mat-cell *matCellDef="let element"> {{element.weight}} </td>
+            <td mat-cell *matCellDef="let element"> {{element.weight}}&nbsp;{{element.measure}} </td>
         </ng-container>
 
-        <!-- Symbol Column -->
+        <!-- Quality Column -->
         <ng-container matColumnDef="quality">
             <th mat-header-cell *matHeaderCellDef> Quality </th>
             <td mat-cell *matCellDef="let element"> {{element.quality}} </td>
         </ng-container>
 
+        <!-- Edit Column -->
+        <ng-container matColumnDef="edit">
+            <th mat-header-cell *matHeaderCellDef> Edit </th>
+            <td mat-cell *matCellDef="let element">
+                <i class="fa-solid fa-pen text-success" role="button" (click)="editCrop(element)"></i>
+            </td>
+        </ng-container>
+
+        <!-- Delete Column -->
+        <ng-container matColumnDef="delete">
+            <th mat-header-cell *matHeaderCellDef> Delete </th>
+            <td mat-cell *matCellDef="let element">
+                <i class="fa-solid fa-trash text-danger" role="button" (click)="deleteCrop(element)"></i>
+            </td>
+        </ng-container>
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
-
-    <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons aria-label="Select page of periodic elements">
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
     </mat-paginator>
 </div>
 
-<ng-template #noCrpListings>
-    <div class="text-center fs-5">Start adding your crops today and let others discover them, click on&nbsp;<strong>"Add New Crop"</strong></div>
-</ng-template>
+
+<div class="text-center fs-5" *ngIf="!dataSource.data || dataSource.data.length <= 0">Start adding your crops today and
+    let others discover them, click on&nbsp;<strong>"Add New Crop"</strong></div>

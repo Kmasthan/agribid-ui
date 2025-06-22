@@ -1,0 +1,109 @@
+<div class="row app-backgroud-color border-bottom">
+    <div class="col-md-12 text-center fs-4 pt-2">
+        <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeDialog()"></i>
+        </div>
+    </div>
+    <div class="col-md-12 text-center fs-4 pt-1 pb-1">
+        Place Bid
+        <!-- <span *ngIf="isCropEditing; else addNewCrop">
+                Update Crop
+            </span>
+            <ng-template #addNewCrop>
+                Add New Crop
+            </ng-template> -->
+    </div>
+    <!-- <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isResponseErr ? 'text-danger' : 'text-success'">
+            {{responseMsg}}
+        </div> -->
+</div>
+
+<div class="col-md-12 col-sm-12">
+    <form #cropBiddingForm="ngForm" class="p-3">
+        <div class="form-group d-flex justify-content-around">
+            <!-- Crop Name -->
+            <mat-form-field appearance="fill">
+                <mat-label>Crop Name</mat-label>
+                <input matInput [(ngModel)]="biddingCrop.cropData.cropName" disabled name="cropName" required>
+            </mat-form-field>
+
+            <!-- Weight -->
+            <mat-form-field appearance="fill">
+                <mat-label>Weight</mat-label>
+                <input matInput type="number" [(ngModel)]="biddingCrop.cropData.weight" disabled name="weight" required>
+            </mat-form-field>
+
+            <!-- Measure -->
+            <mat-form-field appearance="fill">
+                <mat-label>In</mat-label>
+                <mat-select [(ngModel)]="biddingCrop.cropData.measure" disabled name="measure" required>
+                    <mat-option *ngFor="let measure of measureProperties" [value]="measure">
+                        {{ measure }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- Quality -->
+            <mat-form-field appearance="fill">
+                <mat-label>Quality</mat-label>
+                <mat-select [(ngModel)]="biddingCrop.cropData.quality" disabled name="quality" required>
+                    <mat-option *ngFor="let quality of qualityList" [value]="quality">
+                        {{ quality }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <mat-radio-group [(ngModel)]="newBidDetails.biddingForTotalQuantity" name="biddingForTotalQuantity">
+            <mat-label class="fs-6">Bidding for the total quantity ?</mat-label>
+            <mat-radio-button [value]="true">YES</mat-radio-button>
+            <mat-radio-button [value]="false">NO</mat-radio-button>
+        </mat-radio-group>
+
+        <div class="form-group d-flex justify-content-around" *ngIf="!newBidDetails.biddingForTotalQuantity">
+            <!-- Bid Quantity -->
+            <mat-form-field appearance="fill" class="pe-2 w-75">
+                <mat-label>Enter the Quantity</mat-label>
+                <input matInput type="number" [max]="enteredQuantityValidation()"
+                    [(ngModel)]="newBidDetails.biddingQuantity" name="bidQuantity" required>
+            </mat-form-field>
+
+            <!-- Bid Measure -->
+            <mat-form-field appearance="fill" class="w-25">
+                <mat-label>In</mat-label>
+                <mat-select [(ngModel)]="newBidDetails.measure" name="bidMeasure" required>
+                    <mat-option *ngFor="let measure of measureProperties" [value]="measure">
+                        {{ measure }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="form-group d-flex justify-content-around">
+            <!-- Bid Amount -->
+            <mat-form-field appearance="fill" class="pe-2 w-75">
+                <mat-label>Bid Amount</mat-label>
+                <input matInput type="number" [(ngModel)]="newBidDetails.bidAmount" name="bidAmount" required>
+            </mat-form-field>
+
+            <!-- Currency -->
+            <mat-form-field appearance="fill" class="w-25">
+                <mat-label>Currency</mat-label>
+                <mat-select [(ngModel)]="newBidDetails.currency" name="currency" required>
+                    <mat-option *ngFor="let currency of currencyTypes" [value]="currency">
+                        {{ currency }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <button class="btn btn btn-danger float-end" (click)="resetNewBid()">
+            <i class="fa-solid fa-rotate-left"></i>&nbsp;Reset
+        </button>
+
+        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="!isBidEditing"
+            [disabled]="!cropBiddingForm.valid" (click)="saveBid()">
+            <i class="fa-regular fa-floppy-disk"></i>&nbsp;Save
+        </button>
+
+        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="isBidEditing"
+            [disabled]="!cropBiddingForm.valid" (click)="editBit()">
+            <i class="fa-solid fa-pen"></i>&nbsp;Update
+        </button>
+    </form>
+</div>

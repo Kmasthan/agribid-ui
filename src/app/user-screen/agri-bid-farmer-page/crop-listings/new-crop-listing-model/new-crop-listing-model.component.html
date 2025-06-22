@@ -1,28 +1,34 @@
 <div class="app-backgroud-color" name="farmer-registration-form">
-    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeAddNewCropFormModel()"></i>
+    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeAddNewCropFormModel(false)"></i>
     </div>
     <div class="row">
         <div class="col-md-12 text-center fs-4 pt-2">
-            Add New Crop
+            <span *ngIf="isCropEditing; else addNewCrop">
+                Update Crop
+            </span>
+            <ng-template #addNewCrop>
+                Add New Crop
+            </ng-template>
         </div>
-        <!-- <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isRegistrationError ? 'text-danger' : 'text-success'">
-            {{registrationMsg}}
-        </div> -->
+        <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isResponseErr ? 'text-danger' : 'text-success'">
+            {{responseMsg}}
+        </div>
     </div>
 
     <form #addNewCropForm="ngForm" class="p-3">
 
         <div class="form-group d-flex justify-content-around">
-            <!-- State Dropdown -->
+            <!-- Country Dropdown -->
             <mat-form-field appearance="fill" class="w-50">
                 <mat-label>Country</mat-label>
                 <mat-select [(ngModel)]="newCrop.country" name="country"
                     (selectionChange)="getStatesList(newCrop.country)" required>
                     <mat-option>
                         <ngx-mat-select-search [(ngModel)]="searchedCountry" placeholderLabel="Search country"
-                            noEntriesFoundLabel="not found" name="countrySearch"></ngx-mat-select-search>
+                            noEntriesFoundLabel="No options found" name="countrySearch"></ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngFor="let country of countrisList" [value]="country">{{ country }}</mat-option>
+                    <mat-option *ngFor="let country of countrisList | regionDatafilter : searchedCountry"
+                        [value]="country">{{ country }}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -34,9 +40,10 @@
                     (selectionChange)="getDistrictsList(newCrop.country, newCrop.state)" name="state" required>
                     <mat-option>
                         <ngx-mat-select-search [(ngModel)]="serachedState" placeholderLabel="Search state"
-                            name="stateSearch"></ngx-mat-select-search>
+                            noEntriesFoundLabel="No options found" name="stateSearch"></ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngFor="let state of statesList" [value]="state">{{ state }}</mat-option>
+                    <mat-option *ngFor="let state of statesList | regionDatafilter : serachedState" [value]="state">{{
+                        state }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -50,9 +57,10 @@
                     name="district" required>
                     <mat-option>
                         <ngx-mat-select-search [(ngModel)]="searchedDistrict" placeholderLabel="Serach district"
-                            name="districtSearch"></ngx-mat-select-search>
+                            noEntriesFoundLabel="No options found" name="districtSearch"></ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngFor="let district of districtsList" [value]="district">{{ district }}</mat-option>
+                    <mat-option *ngFor="let district of districtsList | regionDatafilter : searchedDistrict"
+                        [value]="district">{{ district }}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -62,9 +70,10 @@
                 <mat-select [(ngModel)]="newCrop.village" [disabled]="!newCrop.district" name="village" required>
                     <mat-option>
                         <ngx-mat-select-search [(ngModel)]="searchedVillage" placeholderLabel="Serach village"
-                            name="villageSearch"></ngx-mat-select-search>
+                            noEntriesFoundLabel="No options found" name="villageSearch"></ngx-mat-select-search>
                     </mat-option>
-                    <mat-option *ngFor="let village of villagesList" [value]="village">{{ village }}</mat-option>
+                    <mat-option *ngFor="let village of villagesList | regionDatafilter : searchedVillage"
+                        [value]="village">{{ village }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -78,30 +87,53 @@
         </div>
 
         <!-- Weight -->
-        <div class="form-group">
-            <mat-form-field appearance="fill" class="w-100">
+        <div class="form-group d-flex justify-content-around">
+            <mat-form-field appearance="fill" class="w-75">
                 <mat-label>Weight</mat-label>
-                <input matInput [(ngModel)]="newCrop.weight" name="weight" required>
+                <input matInput type="number" [(ngModel)]="newCrop.weight" name="weight" required>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="w-25">
+                <mat-label>In</mat-label>
+                <mat-select [(ngModel)]="newCrop.measure" name="measure">
+                    <mat-option *ngFor="let measure of measureProperties" [value]="measure">
+                        {{ measure }}</mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
 
-        <!-- Quality -->
-        <div class="form-group">
-            <mat-form-field appearance="fill" class="w-100">
+        <div class="form-group d-flex justify-content-around">
+            <!-- Quality -->
+            <mat-form-field appearance="fill" class="w-50">
                 <mat-label>Quality</mat-label>
-                <input matInput [(ngModel)]="newCrop.quality" name="quality" required>
+                <mat-select [(ngModel)]="newCrop.quality" name="quality">
+                    <mat-option *ngFor="let quality of qualityList" [value]="quality">
+                        {{ quality }}</mat-option>
+                </mat-select>
             </mat-form-field>
-        </div>
 
-        <!-- Status -->
-        <div class="form-group">
-            <mat-form-field appearance="fill" class="w-100">
+            <!-- Status -->
+            <mat-form-field appearance="fill" class="w-50">
                 <mat-label>Status</mat-label>
-                <input matInput [(ngModel)]="newCrop.status" name="status" required>
+                <mat-select [(ngModel)]="newCrop.status" name="status">
+                    <mat-option *ngFor="let status of statusList" [value]="status">
+                        {{ status }}</mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
 
-        <button class="btn btn btn-success" [disabled]="!addNewCropForm.valid"
-            (click)="addNewCropToListings()">Submit</button>
+        <button class="btn btn btn-danger float-end" (click)="resetNewCropToListings()">
+            <i class="fa-solid fa-rotate-left"></i>&nbsp;Reset
+        </button>
+
+        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="!isCropEditing"
+            [disabled]="!addNewCropForm.valid || isSaveDisable" (click)="addNewCropToListings()">
+            <i class="fa-regular fa-floppy-disk"></i>&nbsp;Save
+        </button>
+
+        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="isCropEditing"
+            [disabled]="!addNewCropForm.valid || isUpdateDisable" (click)="updateCropInListing()">
+            <i class="fa-solid fa-pen"></i>&nbsp;Update
+        </button>
     </form>
 </div>

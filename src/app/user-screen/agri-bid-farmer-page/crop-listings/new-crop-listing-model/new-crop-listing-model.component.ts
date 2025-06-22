@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { CropListings } from '../../entity/crop-listing-dto';
+import { Component, Inject } from '@angular/core';
+import { CropListingsDto } from '../entity/crop-listing-dto';
 import { CropListingsService } from '../crop-listings.service';
-import { error } from 'console';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { LocalStorageService } from '../../../../local-storage.servive';
+import { FarmerDto } from '../../../../agri-bid-home/entity/farmerDto';
 
 @Component({
   selector: 'app-new-crop-listing-model',
@@ -12,29 +13,55 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class NewCropListingModelComponent {
 
-  newCrop: CropListings = new CropListings()
+  newCrop: CropListingsDto = new CropListingsDto()
+  farmer: FarmerDto = new FarmerDto();
 
   countrisList: string[] = [];
   statesList: string[] = [];
   districtsList: string[] = [];
   villagesList: string[] = [];
+  measureProperties: string[] = ["Kg", "Lbs", "Tons"];
+  qualityList: string[] = ["Excellent", "Good", "Average", "Below Average"];
+  statusList: string[] = ["ACTIVE", "SOLD"];
+
 
   searchedCountry!: string;
   serachedState!: string;
   searchedDistrict!: string;
   searchedVillage!: string;
+  responseMsg!: string;
+  isResponseErr: boolean = false;
+  editCropString!: string;
+  isCropEditing: boolean = false;
 
-  constructor(private dialogRef: MatDialogRef<NewCropListingModelComponent>, private cropListingService: CropListingsService) { }
+  isSaveDisable: boolean = false;
+  isUpdateDisable: boolean = false;
+
+  constructor(private dialogRef: MatDialogRef<NewCropListingModelComponent>, private cropListingService: CropListingsService,
+    @Inject(MAT_DIALOG_DATA) private data: any, private localStorageService: LocalStorageService
+  ) { }
 
   ngOnInit() {
+    this.farmer = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : null;
+
+    this.newCrop.measure = this.measureProperties[0];
+    this.newCrop.quality = this.qualityList[0];
+    this.newCrop.status = this.statusList[0];
     this.getCountriesList();
+    if (this.data.editCrop) {
+      this.isCropEditing = true;
+      this.editCropString = JSON.stringify(this.data.editCrop);
+      this.newCrop = this.data.editCrop;
+    } else {
+      this.isCropEditing = false;
+    }
   }
 
   getCountriesList() {
     this.cropListingService.getCountries().subscribe({
       next: (data) => {
         this.countrisList = <string[]>data;
-        if (this.countrisList && this.countrisList.length > 0) {
+        if (!this.isCropEditing && this.countrisList && this.countrisList.length > 0) {
           this.newCrop.country = this.countrisList[0];
         }
       },
@@ -54,7 +81,7 @@ export class NewCropListingModelComponent {
     this.cropListingService.getStates(country).subscribe({
       next: (data) => {
         this.statesList = <string[]>data;
-        if (this.statesList && this.statesList.length > 0) {
+        if (!this.isCropEditing && this.statesList && this.statesList.length > 0) {
           this.newCrop.state = this.statesList[0];
         }
       },
@@ -74,7 +101,7 @@ export class NewCropListingModelComponent {
     this.cropListingService.getDistricts(country, state).subscribe({
       next: (data) => {
         this.districtsList = <string[]>data;
-        if (this.districtsList && this.districtsList.length > 0) {
+        if (!this.isCropEditing && this.districtsList && this.districtsList.length > 0) {
           this.newCrop.district = this.districtsList[0];
         }
       },
@@ -94,7 +121,7 @@ export class NewCropListingModelComponent {
     this.cropListingService.getVillages(country, state, district).subscribe({
       next: (data) => {
         this.villagesList = <string[]>data;
-        if (this.villagesList && this.villagesList.length > 0) {
+        if (!this.isCropEditing && this.villagesList && this.villagesList.length > 0) {
           this.newCrop.village = this.villagesList[0];
         }
       },
@@ -110,11 +137,54 @@ export class NewCropListingModelComponent {
   }
 
   addNewCropToListings() {
-    console.log(this.newCrop);
-    console.log(this.searchedCountry);
+    this.isSaveDisable = true;
+    this.cropListingService.saveNewCropToListing(this.farmer, this.data.newCropPosition, this.newCrop).subscribe({
+      next: (data) => {
+        this.responseMsg = data.message;
+        setTimeout(() => {
+          this.closeAddNewCropFormModel(true);
+        }, 1000)
+      },
+      error: (error) => {
+        this.responseMsg = error.message;
+        this.isResponseErr = true;
+        this.isSaveDisable = false;
+      },
+      complete: () => { }
+    })
   }
 
-  closeAddNewCropFormModel() {
-    this.dialogRef.close();
+  updateCropInListing() {
+    this.isUpdateDisable = true;
+    this.cropListingService.updateCropInListing(this.farmer.id, this.newCrop).subscribe({
+      next: (data) => {
+        this.responseMsg = data.message;
+        setTimeout(() => {
+          this.closeAddNewCropFormModel(true);
+        }, 1000)
+      },
+      error: (error) => {
+        this.responseMsg = error.message;
+        this.isResponseErr = true;
+        this.isUpdateDisable = false;
+      },
+      complete: () => { }
+    })
+  }
+
+  closeAddNewCropFormModel(isFormSubmitted: boolean) {
+    let result = {
+      "isFormSubmitted": isFormSubmitted,
+      "crop": this.newCrop
+    }
+    this.dialogRef.close(result);
+  }
+
+  resetNewCropToListings() {
+    if (this.isCropEditing) {
+      this.newCrop = JSON.parse(this.editCropString);
+    } else {
+      this.newCrop = new CropListingsDto();
+    }
   }
 }

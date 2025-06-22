@@ -1,22 +1,16 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../../data.service';
-import { HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { FarmerDto } from '../../../agri-bid-home/entity/farmerDto';
-import { CropListingsDto } from './entity/crop-listing-dto';
+import { HttpParams } from '@angular/common/http';
+import { BidDetailsDto } from './entity/bid-details-dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CropListingsService {
-
+export class CropBiddingsService {
   countriesList: string[] = [];
-  constructor(private dataService: DataService) { }
 
-  getFarmerCropListings(farmerId: string) {
-    const params = new HttpParams().set("farmerId", farmerId);
-    return this.dataService.getObjects("farmer/get-crop-lisitngs", params);
-  }
+  constructor(private dataService: DataService) { }
 
   getCountries(): Observable<string[]> {
     return new Observable((observable) => {
@@ -52,20 +46,20 @@ export class CropListingsService {
     return this.dataService.getObjectsWithPath(`region-data/villages/${country}/${state}/${district}`)
   }
 
-  saveNewCropToListing(farmer: FarmerDto, newCropPosition: number, newCrop: CropListingsDto) {
+  getCropsListForBidding(country: string, state: string, district: string, village: string) {
     const params = new HttpParams()
-      .set("farmerId", farmer.id).set("farmerName", farmer.name)
-      .set("farmerPhone", farmer.mobileNumber).set("farmerEmail", farmer.email)
-      .set("newCropPosition", newCropPosition);
-
-    return this.dataService.postData("farmer/new-crop-listing?" + params, newCrop);
+      .set("country", country)
+      .set("state", state)
+      .set("district", district)
+      .set("village", village);
+    return this.dataService.getObjects("buyer/bidding-crops", params);
   }
 
-  deleteCropFromListing(farmerId: any, cropId: string) {
-    return this.dataService.deleteObjectWithId(`farmer/delete-crop/${farmerId}/${cropId}`)
+  saveBidForCrop(farmerId: string, cropId: string, newBidDetails: BidDetailsDto) {
+    return this.dataService.postData(`buyer/new-bid/${farmerId}/${cropId}`, newBidDetails);
   }
 
-  updateCropInListing(farmerId: string, updateCrop: CropListingsDto) {
-    return this.dataService.updateObjectWithId(`farmer/update-crop/${farmerId}/${updateCrop.id}`, updateCrop);
+  getCropBidsList(farmerId: string, cropId: string) {
+    return this.dataService.getObjectsWithPath(`buyer/crop-bids/${farmerId}/${cropId}`);
   }
 }

@@ -12,11 +12,13 @@ import { MatInputModule } from '@angular/material/input'
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
+import { FiltersModule } from '../../filters/filters.module';
+import { DeleteCropListingConfirmationModelComponent } from './crop-listings/delete-crop-listing-confirmation-model/delete-crop-listing-confirmation-model.component';
 
 
 
 @NgModule({
-  declarations: [CropListingsComponent, NewCropListingModelComponent],
+  declarations: [CropListingsComponent, NewCropListingModelComponent, DeleteCropListingConfirmationModelComponent],
   imports: [
     CommonModule,
     AgriBidFarmerPageRoutingModule,
@@ -26,7 +28,8 @@ import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    NgxMatSelectSearchModule
+    NgxMatSelectSearchModule,
+    FiltersModule
   ],
   providers: [CropListingsService]
 })

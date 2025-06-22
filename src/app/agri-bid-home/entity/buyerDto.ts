@@ -1,4 +1,5 @@
 export class BuyerDto {
+    id!: string;
     name!: string;
     mobileNumber!: string;
     email!: string;

@@ -410,6 +410,7 @@ export {
   _VIEW_REPEATER_STRATEGY,
   _DisposeViewRepeaterStrategy,
   _RecycleViewRepeaterStrategy,
-  SelectionModel
+  SelectionModel,
+  UniqueSelectionDispatcher
 };
-//# sourceMappingURL=chunk-6DYK52CI.js.map
+//# sourceMappingURL=chunk-7JBOIV3T.js.map

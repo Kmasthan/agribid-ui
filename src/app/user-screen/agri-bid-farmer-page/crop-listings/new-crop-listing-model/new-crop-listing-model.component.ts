@@ -4,6 +4,7 @@ import { CropListingsService } from '../crop-listings.service';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { LocalStorageService } from '../../../../local-storage.servive';
 import { FarmerDto } from '../../../../agri-bid-home/entity/farmerDto';
+import { RegionDataService } from '../../../region-data/region-data.service';
 
 @Component({
   selector: 'app-new-crop-listing-model',
@@ -38,7 +39,7 @@ export class NewCropListingModelComponent {
   isUpdateDisable: boolean = false;
 
   constructor(private dialogRef: MatDialogRef<NewCropListingModelComponent>, private cropListingService: CropListingsService,
-    @Inject(MAT_DIALOG_DATA) private data: any, private localStorageService: LocalStorageService
+    @Inject(MAT_DIALOG_DATA) private data: any, private localStorageService: LocalStorageService, private regionDataService: RegionDataService
   ) { }
 
   ngOnInit() {
@@ -58,7 +59,7 @@ export class NewCropListingModelComponent {
   }
 
   getCountriesList() {
-    this.cropListingService.getCountries().subscribe({
+    this.regionDataService.getCountries().subscribe({
       next: (data) => {
         this.countrisList = <string[]>data;
         if (!this.isCropEditing && this.countrisList && this.countrisList.length > 0) {
@@ -78,7 +79,7 @@ export class NewCropListingModelComponent {
   }
 
   getStatesList(country: string) {
-    this.cropListingService.getStates(country).subscribe({
+    this.regionDataService.getStates(country).subscribe({
       next: (data) => {
         this.statesList = <string[]>data;
         if (!this.isCropEditing && this.statesList && this.statesList.length > 0) {
@@ -98,7 +99,7 @@ export class NewCropListingModelComponent {
   }
 
   getDistrictsList(country: string, state: string) {
-    this.cropListingService.getDistricts(country, state).subscribe({
+    this.regionDataService.getDistricts(country, state).subscribe({
       next: (data) => {
         this.districtsList = <string[]>data;
         if (!this.isCropEditing && this.districtsList && this.districtsList.length > 0) {
@@ -118,7 +119,7 @@ export class NewCropListingModelComponent {
   }
 
   getVillagesList(country: string, state: string, district: string) {
-    this.cropListingService.getVillages(country, state, district).subscribe({
+    this.regionDataService.getVillages(country, state, district).subscribe({
       next: (data) => {
         this.villagesList = <string[]>data;
         if (!this.isCropEditing && this.villagesList && this.villagesList.length > 0) {

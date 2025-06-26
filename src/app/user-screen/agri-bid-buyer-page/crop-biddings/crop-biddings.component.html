@@ -134,7 +134,14 @@
                                 (click)="editYourBid(bid)"></i>
                         </span>
                     </td>
-                    <td>{{bid.createdAt}}</td>
+                    <td>
+                        <span *ngIf="bid.modifiedAt; else createdAt">
+                            {{bid.modifiedAt}}
+                        </span>
+                        <ng-template #createdAt>
+                            {{bid.createdAt}}
+                        </ng-template>
+                    </td>
                 </tr>
                 <tr>
             </tbody>

@@ -10,4 +10,5 @@ export class CropListingsDto {
     quality!: string
     status!: string
     listedAt!: string
+    modifiedAt!: string
 }

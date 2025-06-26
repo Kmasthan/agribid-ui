@@ -4,17 +4,16 @@
         </div>
     </div>
     <div class="col-md-12 text-center fs-4 pt-1 pb-1">
-        Place Bid
-        <!-- <span *ngIf="isCropEditing; else addNewCrop">
-                Update Crop
-            </span>
-            <ng-template #addNewCrop>
-                Add New Crop
-            </ng-template> -->
+        <span *ngIf="isBidEditing; else placeBid">
+            Update Bid
+        </span>
+        <ng-template #placeBid>
+            Place Bid
+        </ng-template>
     </div>
-    <!-- <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isResponseErr ? 'text-danger' : 'text-success'">
-            {{responseMsg}}
-        </div> -->
+    <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isResponseError ? 'text-danger' : 'text-success'">
+        {{responseMsg}}
+    </div>
 </div>
 
 <div class="col-md-12 col-sm-12">
@@ -35,19 +34,13 @@
             <!-- Measure -->
             <mat-form-field appearance="fill">
                 <mat-label>In</mat-label>
-                <mat-select [(ngModel)]="biddingCrop.cropData.measure" disabled name="measure" required>
-                    <mat-option *ngFor="let measure of measureProperties" [value]="measure">
-                        {{ measure }}</mat-option>
-                </mat-select>
+                <input matInput [(ngModel)]="biddingCrop.cropData.measure" disabled name="measure" required>
             </mat-form-field>
 
             <!-- Quality -->
             <mat-form-field appearance="fill">
                 <mat-label>Quality</mat-label>
-                <mat-select [(ngModel)]="biddingCrop.cropData.quality" disabled name="quality" required>
-                    <mat-option *ngFor="let quality of qualityList" [value]="quality">
-                        {{ quality }}</mat-option>
-                </mat-select>
+                <input matInput [(ngModel)]="biddingCrop.cropData.quality" disabled name="quality" required>
             </mat-form-field>
         </div>
 
@@ -79,7 +72,8 @@
             <!-- Bid Amount -->
             <mat-form-field appearance="fill" class="pe-2 w-75">
                 <mat-label>Bid Amount</mat-label>
-                <input matInput type="number" [(ngModel)]="newBidDetails.bidAmount" name="bidAmount" required>
+                <input matInput type="number" [min]="minBidAmount" [(ngModel)]="newBidDetails.bidAmount"
+                    name="bidAmount" required>
             </mat-form-field>
 
             <!-- Currency -->
@@ -101,9 +95,13 @@
             <i class="fa-regular fa-floppy-disk"></i>&nbsp;Save
         </button>
 
-        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="isBidEditing"
-            [disabled]="!cropBiddingForm.valid" (click)="editBit()">
+        <button class="btn btn btn-success float-end mb-3 me-2" *ngIf="isBidEditing" [disabled]="!cropBiddingForm.valid"
+            (click)="updateBid()">
             <i class="fa-solid fa-pen"></i>&nbsp;Update
         </button>
+
+        <div class="">
+            <strong>Note :</strong>&nbsp;The bid amount cannot be less than the current highest bid amount.
+        </div>
     </form>
 </div>

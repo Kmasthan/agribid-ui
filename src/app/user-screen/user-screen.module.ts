@@ -5,6 +5,7 @@ import { UserScreenRoutingModule } from './user-screen-routing.module';
 import { UserScreenComponent } from './user-screen.component';
 import { AgriBidFarmerPageModule } from './agri-bid-farmer-page/agri-bid-farmer-page.module';
 import { AgriBidBuyerPageModule } from './agri-bid-buyer-page/agri-bid-buyer-page.module';
+import { RegionDataService } from './region-data/region-data.service';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { AgriBidBuyerPageModule } from './agri-bid-buyer-page/agri-bid-buyer-pag
     AgriBidFarmerPageModule,
     AgriBidBuyerPageModule
   ],
+  providers: [RegionDataService]
 })
 export class UserScreenModule { }
  

@@ -1,0 +1,31 @@
+<div class="app-backgroud-color" name="delete-crop-confirmation-model">
+    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeDialog(false)"></i>
+    </div>
+    <div class="row border-bottom">
+        <div class="col-md-12 text-center fs-3 pt-2">
+            Accept Bid Confirmation
+        </div>
+        <div class="col-md-12 col-md-12 text-center" [ngClass]="isResponseError ? 'text-danger' : 'text-success'">
+            <h2>{{responseMsg}}</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12 col-md-12 text-center">
+            <h2 for="deleteCrop" class="pb-3">Are you sure, you want to accept the bid
+                of&nbsp;<span
+                    class="fs-4">{{acceptedCropBid.bidDetails.bidAmount}}</span>&nbsp;{{acceptedCropBid.bidDetails.currency}}
+                &nbsp;for&nbsp;{{acceptedCropBid.bidDetails.biddingQuantity}}&nbsp;{{acceptedCropBid.bidDetails.measure}}&nbsp;
+                of&nbsp;{{acceptedCropBid.cropDetails.cropName}}?
+            </h2>
+        </div>
+        <div class="col-sm-6 col-md-6"></div>
+        <div class="col-sm-6 col-md-6">
+            <button class="btn btn-danger float-end me-2" (click)="closeDialog(false)">
+                <i class="fa fa-times"></i>&nbsp;Cancle
+            </button>
+            <button class="btn btn-success float-end mb-3 me-2" (click)="acceptBid()">
+                <i class="fa-regular fa-thumbs-up"></i>&nbsp;Accept
+            </button>
+        </div>
+    </div>
+</div>

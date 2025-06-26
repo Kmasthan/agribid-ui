@@ -65,4 +65,12 @@ html {
     justify-content: center;
     align-items: center;
 }
+
+/* Make sure the footer spans the full width and stays at the bottom */
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #e8d5b0;
+}
   

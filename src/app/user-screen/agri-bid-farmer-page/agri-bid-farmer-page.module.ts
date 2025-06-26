@@ -14,11 +14,17 @@ import { FormsModule } from '@angular/forms';
 import { NgxMatSelectSearchModule } from 'ngx-mat-select-search';
 import { FiltersModule } from '../../filters/filters.module';
 import { DeleteCropListingConfirmationModelComponent } from './crop-listings/delete-crop-listing-confirmation-model/delete-crop-listing-confirmation-model.component';
+import { MyCropBidsComponent } from './my-crop-bids/my-crop-bids.component';
+import { MyCropBidsService } from './my-crop-bids/my-crop-bids.service';
+import { MatCardModule } from '@angular/material/card'
+import { AcceptBidConfirmationModelComponent } from './my-crop-bids/accept-bid-confirmation-model/accept-bid-confirmation-model.component';
 
 
 
 @NgModule({
-  declarations: [CropListingsComponent, NewCropListingModelComponent, DeleteCropListingConfirmationModelComponent],
+  declarations: [CropListingsComponent, NewCropListingModelComponent, DeleteCropListingConfirmationModelComponent,
+    MyCropBidsComponent, AcceptBidConfirmationModelComponent
+  ],
   imports: [
     CommonModule,
     AgriBidFarmerPageRoutingModule,
@@ -29,8 +35,9 @@ import { DeleteCropListingConfirmationModelComponent } from './crop-listings/del
     MatFormFieldModule,
     FormsModule,
     NgxMatSelectSearchModule,
-    FiltersModule
+    FiltersModule,
+    MatCardModule
   ],
-  providers: [CropListingsService]
+  providers: [CropListingsService, MyCropBidsService]
 })
 export class AgriBidFarmerPageModule { }

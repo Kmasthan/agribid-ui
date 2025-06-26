@@ -1,0 +1,151 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active text-dark" aria-current="page"><i
+                class="fa-solid fa-chart-simple"></i>&nbsp;&nbsp;My Crop Bids</li>
+    </ol>
+</nav>
+
+<div class="row ps-3 pe-2">
+    <div class="col-sm-12 col-md-12">
+        <!-- Country Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>Country</mat-label>
+            <mat-select [(ngModel)]="selectedCountry" name="country" (selectionChange)="getStatesList(selectedCountry)"
+                required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedCountry" placeholderLabel="Search country"
+                        noEntriesFoundLabel="No options found" name="countrySearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let country of countrisList | regionDatafilter : searchedCountry"
+                    [value]="country">{{ country }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <!-- State Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>State</mat-label>
+            <mat-select [(ngModel)]="selectedState" [disabled]="!selectedCountry"
+                (selectionChange)="getDistrictsList(selectedCountry, selectedState)" name="state" required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="serachedState" placeholderLabel="Search state"
+                        noEntriesFoundLabel="No options found" name="stateSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let state of statesList | regionDatafilter : serachedState" [value]="state">{{
+                    state }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- District Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>District</mat-label>
+            <mat-select [(ngModel)]="selectedDistrict" [disabled]="!selectedState"
+                (selectionChange)="getVillagesList(selectedCountry, selectedState, selectedDistrict)" name="district"
+                required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedDistrict" placeholderLabel="Serach district"
+                        noEntriesFoundLabel="No options found" name="districtSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let district of districtsList | regionDatafilter : searchedDistrict"
+                    [value]="district">{{ district }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <!-- Village Dropdown -->
+        <mat-form-field appearance="fill" class="pe-3">
+            <mat-label>Village</mat-label>
+            <mat-select [(ngModel)]="selectedVillage" [disabled]="!selectedDistrict"
+                (selectionChange)="onChangeVillage()" name="village" required>
+                <mat-option>
+                    <ngx-mat-select-search [(ngModel)]="searchedVillage" placeholderLabel="Serach village"
+                        noEntriesFoundLabel="No options found" name="villageSearch"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let village of villagesList | regionDatafilter : searchedVillage"
+                    [value]="village">{{ village }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+</div>
+
+<div class="row ps-3 pe-2" *ngIf="cropBidsList.length > 0">
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" *ngFor="let cropBid of cropBidsList; index as i">
+        <mat-card class="w-100" appearance="outlined">
+            <mat-card-header class="border border-bottom pb-3">
+                <mat-card-title-group>
+                    <mat-card-title>{{ cropBid.cropDetails.cropName }}</mat-card-title>
+                    <mat-card-subtitle>Listed on&nbsp;:&nbsp;
+                        <span *ngIf="cropBid.cropDetails.modifiedAt; else createdAt">
+                            {{cropBid.cropDetails.modifiedAt}}</span>
+                        <ng-template #createdAt>
+                            {{cropBid.cropDetails.listedAt}}
+                        </ng-template>
+                    </mat-card-subtitle>
+                    <mat-card-subtitle>Quantity&nbsp;:&nbsp;{{cropBid.cropDetails.weight}}&nbsp;{{cropBid.cropDetails.measure}}</mat-card-subtitle>
+                    <!-- <img mat-card-sm-image src="https://material.angular.dev/assets/img/examples/shiba2.jpg" /> -->
+                </mat-card-title-group>
+            </mat-card-header>
+            <mat-card-content class="pb-0">
+                <div class="row pt-1 pb-2 fs-5">
+                    <div class="col-8 col-md-8 text-end">
+                        <strong>Bid Details</strong>
+                    </div>
+                    <div class="col-4 col-md-4 text-end">
+                        <i class="fa-solid fa-arrows-rotate text-primary" role="button" title="Refresh Bid Details"
+                            (click)="getLatestBid(i, cropBid.cropDetails.id)"></i>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2 border border-bottom">
+                    <!-- Buyer Name -->
+                    <div>
+                        <i class="fa-solid fa-user me-2 text-primary"></i>
+                        <strong>Buyer&nbsp;:&nbsp;</strong>&nbsp;{{cropBid.bidDetails.buyerName}}
+                    </div>
+
+                    <!-- Phone -->
+                    <div>
+                        <i class="fa-solid fa-phone me-2 text-warning"></i>
+                        <strong>Phone&nbsp;:&nbsp;</strong>&nbsp;{{cropBid.bidDetails.buyerPhone}}
+                    </div>
+
+                    <!-- Email -->
+                    <div>
+                        <i class="fa-solid fa-envelope me-2 text-success"></i>
+                        <strong>Email&nbsp;:&nbsp;</strong>&nbsp;{{cropBid.bidDetails.buyerEmail}}
+                    </div>
+
+                    <!-- Bid Price -->
+                    <div>
+                        <i class="fa-solid fa-indian-rupee-sign me-2 text-danger"></i>
+                        <strong>Bid Price&nbsp;:&nbsp;</strong>&nbsp;<span class="fs-4">{{cropBid.bidDetails.bidAmount |
+                            number}}</span>&nbsp;{{cropBid.bidDetails.currency}}
+                    </div>
+
+                    <!-- Bid Quantity -->
+                    <div>
+                        <i class="fa-solid fa-weight-hanging me-2 text-secondary"></i>
+                        <strong>Bid
+                            Quantity&nbsp;:&nbsp;</strong>&nbsp;{{cropBid.bidDetails.biddingQuantity}}&nbsp;{{cropBid.bidDetails.measure}}
+                    </div>
+
+                    <!-- Bid Date -->
+                    <div>
+                        <i class="fa-solid fa-calendar-days me-2 text-info"></i>
+                        <strong>Bid Date&nbsp;:&nbsp;</strong>&nbsp;
+                        <span *ngIf="cropBid.bidDetails.modifiedAt; else bidCreatedAt">
+                            {{cropBid.bidDetails.modifiedAt}}</span>
+                        <ng-template #bidCreatedAt>
+                            {{cropBid.bidDetails.createdAt}}
+                        </ng-template>
+                    </div>
+                </div>
+                <div class="row float-end pt-2 pb-1">
+                    <button class="btn btn-success" (click)="acceptBidForCrop(cropBid, i)"><i class="fa-regular fa-thumbs-up"></i>&nbsp;Accept</button>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
+
+<div class="text-center fs-4" *ngIf="cropBidsList.length == 0">No bids yet. your crop is visible
+    to buyers, stay tuned!</div>

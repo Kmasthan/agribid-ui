@@ -27,6 +27,10 @@ export class PlaceNewBidModelComponent {
   editingBidString!: string;
   isBidEditing: boolean = false;
 
+  responseMsg!: string;
+  isResponseError: boolean = false;
+  minBidAmount!: number;
+
   constructor(private dialogeRef: MatDialogRef<PlaceNewBidModelComponent>, @Inject(MAT_DIALOG_DATA) private dialogData: any,
     private localStorageService: LocalStorageService, private cropBiddingsService: CropBiddingsService) { }
 
@@ -48,6 +52,10 @@ export class PlaceNewBidModelComponent {
         this.newBidDetails.currency = this.currencyTypes[0];
         this.isBidEditing = false;
       }
+
+      if (this.dialogData.minBidAmount) {
+        this.minBidAmount = this.dialogData.minBidAmount + 1;
+      }
     }
   }
 
@@ -63,22 +71,38 @@ export class PlaceNewBidModelComponent {
     }
 
     this.cropBiddingsService.saveBidForCrop(this.biddingCrop.farmerId, this.biddingCrop.cropData.id, this.newBidDetails).subscribe({
-      next: (data) => {
-        console.log(data.message);
+      next: (response) => {
+        this.responseMsg = response.message;
+        this.isResponseError = false;
         setTimeout(() => {
           this.dialogeRef.close(this.newBidDetails);
         }, 1000)
       },
       error: (error) => {
-        console.log(error.message);
+        this.responseMsg = error.message;
+        this.isResponseError = true;
       },
       complete: () => { }
     })
 
   }
 
-  editBit() {
+  updateBid() {
     console.log(this.newBidDetails);
+    this.cropBiddingsService.updateCropBidDetail(this.biddingCrop.farmerId, this.biddingCrop.cropData.id, this.newBidDetails).subscribe({
+      next: (response) => {
+        this.responseMsg = response.message;
+        this.isResponseError = false;
+        setTimeout(() => {
+          this.dialogeRef.close(this.newBidDetails);
+        }, 1000)
+      },
+      error: (error) => {
+        this.responseMsg = error.message;
+        this.isResponseError = true;
+      },
+      complete: () => { }
+    })
   }
 
   resetNewBid() {

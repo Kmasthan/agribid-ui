@@ -7,6 +7,7 @@ import { CropsBiddingDto } from './entity/crop-bidding-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { PlaceNewBidModelComponent } from './place-new-bid-model/place-new-bid-model.component';
 import { BidDetailsDto } from './entity/bid-details-dto';
+import { RegionDataService } from '../../region-data/region-data.service';
 
 @Component({
   selector: 'app-crop-biddings',
@@ -39,8 +40,11 @@ export class CropBiddingsComponent {
   selectedCropIndex!: number;
 
   cropBidsDetails: BidDetailsDto[] = [];
+
+  intervalId: any;
+
   constructor(private localStorageService: LocalStorageService, private cropBiddingService: CropBiddingsService,
-    private model: MatDialog
+    private model: MatDialog, private regionDataService: RegionDataService
   ) { }
 
   ngOnInit() {
@@ -48,8 +52,14 @@ export class CropBiddingsComponent {
     this.getCountriesList();
   }
 
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
   getCountriesList() {
-    this.cropBiddingService.getCountries().subscribe({
+    this.regionDataService.getCountries().subscribe({
       next: (data) => {
         this.countrisList = <string[]>data;
         if (this.countrisList && this.countrisList.length > 0) {
@@ -65,13 +75,12 @@ export class CropBiddingsComponent {
         this.isShowBiddingForm = false;
       },
       complete: () => {
-        console.log("Success");
       }
     })
   }
 
   getStatesList(country: string) {
-    this.cropBiddingService.getStates(country).subscribe({
+    this.regionDataService.getStates(country).subscribe({
       next: (data) => {
         this.statesList = <string[]>data;
         if (this.statesList && this.statesList.length > 0) {
@@ -87,13 +96,12 @@ export class CropBiddingsComponent {
         this.isShowBiddingForm = false;
       },
       complete: () => {
-        console.log("Success");
       }
     })
   }
 
   getDistrictsList(country: string, state: string) {
-    this.cropBiddingService.getDistricts(country, state).subscribe({
+    this.regionDataService.getDistricts(country, state).subscribe({
       next: (data) => {
         this.districtsList = <string[]>data;
         if (this.districtsList && this.districtsList.length > 0) {
@@ -109,13 +117,12 @@ export class CropBiddingsComponent {
         this.isShowBiddingForm = false;
       },
       complete: () => {
-        console.log("Success");
       }
     })
   }
 
   getVillagesList(country: string, state: string, district: string) {
-    this.cropBiddingService.getVillages(country, state, district).subscribe({
+    this.regionDataService.getVillages(country, state, district).subscribe({
       next: (data) => {
         this.villagesList = <string[]>data;
         if (this.villagesList && this.villagesList.length > 0 && !this.selectedVillage) {
@@ -129,21 +136,21 @@ export class CropBiddingsComponent {
         this.cropBidsDetails = [];
         this.isShowBiddingForm = false;
       },
-      complete: () => {
-        console.log("Success");
-
-      }
+      complete: () => { }
     })
   }
 
   getCropsForBidding(country: string, state: string, district: string, village: string) {
+    this.selectedCropIndex = -1;
+    this.cropBidsDetails = [];
+    this.isShowBiddingForm = false;
+
     this.cropBiddingService.getCropsListForBidding(country, state, district, village).subscribe({
       next: (data) => {
         this.biddingCropsList = <CropsBiddingDto[]>data;
       },
       error: (error) => {
         this.biddingCropsList = [];
-        this.cropBidsDetails = [];
         this.isShowBiddingForm = false;
       },
       complete: () => { }
@@ -154,7 +161,6 @@ export class CropBiddingsComponent {
     this.selectedCropIndex = selectedCropIndex;
     this.isShowBiddingForm = true;
     this.selectedCropForBidding = biddingCrop;
-    this.cropBidsDetails = [];
 
     this.cropBiddingService.getCropBidsList(this.selectedCropForBidding.farmerId, this.selectedCropForBidding.cropData.id).subscribe({
       next: (data) => {
@@ -167,17 +173,24 @@ export class CropBiddingsComponent {
         this.cropBidsDetails = [];
         this.isBidPlacedAlredy = false;
       },
-      complete: () => { }
+      complete: () => {
+        this.startInterval();
+      }
     })
   }
 
   placeYourBid(editingBid: any) {
+    let minBidAmount = 0;
+    if (this.cropBidsDetails.length > 0) {
+      minBidAmount = this.cropBidsDetails[0].bidAmount;
+    }
     const dialogRef = this.model.open(PlaceNewBidModelComponent, {
       width: '600px',
       disableClose: true,
       data: {
         "selectedCrop": this.selectedCropForBidding,
-        "editingBid": editingBid
+        "editingBid": editingBid,
+        "minBidAmount": minBidAmount
       }
     });
 
@@ -185,21 +198,23 @@ export class CropBiddingsComponent {
       if (result) {
         let newBid = new BidDetailsDto();
         newBid = result;
+        const now = new Date();
+        let dateString = now.getFullYear() + '-'
+          + String(now.getMonth() + 1).padStart(2, '0') + '-'
+          + String(now.getDate()).padStart(2, '0');
+
         if (editingBid) {
           const index = this.cropBidsDetails.findIndex(bid => bid.buyerId == this.user.id)
           if (index > -1) {
             this.cropBidsDetails[index] = newBid;
+            newBid.modifiedAt = dateString;
           }
         } else {
-          const now = new Date();
-          newBid.createdAt = now.getFullYear() + '-'
-            + String(now.getMonth() + 1).padStart(2, '0') + '-'
-            + String(now.getDate()).padStart(2, '0');
-
+          newBid.createdAt = dateString;
           this.isBidPlacedAlredy = true;
           this.cropBidsDetails.push(newBid);
-          this.cropBidsDetails.sort((bid1, bid2) => bid1.bidAmount - bid2.bidAmount).reverse();
         }
+        this.cropBidsDetails.sort((bid1, bid2) => bid1.bidAmount - bid2.bidAmount).reverse();
       }
     })
   }
@@ -207,5 +222,13 @@ export class CropBiddingsComponent {
   editYourBid(bid: BidDetailsDto) {
     let editingBid = JSON.parse(JSON.stringify(bid));
     this.placeYourBid(editingBid);
+  }
+
+  startInterval() {
+    if (!this.intervalId) {
+      this.intervalId = setInterval(() => {
+        this.viewOrPlaceBidForCrop(this.selectedCropForBidding, this.selectedCropIndex);
+      }, 60000);
+    }
   }
 }

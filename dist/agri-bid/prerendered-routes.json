@@ -3,11 +3,15 @@
     "/",
     "/user",
     "/user/buyer",
+    "/user/buyer/crop-bidding",
     "/user/buyer/dashboard",
+    "/user/crop-bidding",
     "/user/crop-listings",
     "/user/dashboard",
     "/user/farmer",
     "/user/farmer/crop-listings",
-    "/user/farmer/dashboard"
+    "/user/farmer/dashboard",
+    "/user/farmer/my-crop-bids",
+    "/user/my-crop-bids"
   ]
 }

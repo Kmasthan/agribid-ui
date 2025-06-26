@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { RegionDataService } from '../../region-data/region-data.service';
 import { LocalStorageService } from '../../../local-storage.servive';
-import { BuyerDto } from '../../../agri-bid-home/entity/buyerDto';
 import { CropBidsDto } from './entity/crop-bids-dto';
 import { MyCropBidsService } from './my-crop-bids.service';
 import { FarmerDto } from '../../../agri-bid-home/entity/farmerDto';
-import { error } from 'console';
 import { BidDetailsDto } from '../../agri-bid-buyer-page/crop-biddings/entity/bid-details-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptBidConfirmationModelComponent } from './accept-bid-confirmation-model/accept-bid-confirmation-model.component';
@@ -44,9 +42,6 @@ export class MyCropBidsComponent {
   ngOnInit() {
     this.user = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : new FarmerDto();
     this.getCountriesList();
-    setTimeout(() => {
-      this.getBiddedCropsDetails();
-    }, 1000)
   }
 
   getCountriesList() {
@@ -114,7 +109,9 @@ export class MyCropBidsComponent {
       error: (error) => {
         this.villagesList = [];
       },
-      complete: () => { }
+      complete: () => {
+        this.getBiddedCropsDetails();
+      }
     })
   }
 
@@ -131,9 +128,7 @@ export class MyCropBidsComponent {
       error: (error) => {
         this.cropBidsList = [];
       },
-      complete: () => {
-
-      }
+      complete: () => { }
     })
   }
 
@@ -163,7 +158,7 @@ export class MyCropBidsComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result.isBidAccepted) {
+      if (result.isBidAccepted) {
         this.cropBidsList.splice(cropBidIndex, 1);
       }
     })

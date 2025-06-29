@@ -1,5 +1,5 @@
 import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-import { UserNavItems } from './entiry/user-navItems';
+import { UserNavItems } from './entity/user-navItems';
 import { UserScreenService } from './user-screen.service';
 import { LocalStorageService } from '../local-storage.servive';
 import { Router } from '@angular/router';

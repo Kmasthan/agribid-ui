@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../../data.service';
 import { HttpParams } from '@angular/common/http';
+import { CropListingsDto } from '../crop-listings/entity/crop-listing-dto';
 
 @Injectable({
   providedIn: 'root'
@@ -18,5 +19,9 @@ export class MyCropBidsService {
 
   getLatestBidForTheCrop(farmerId: string, cropId: string) {
     return this.dataService.getObjectsWithPath(`farmer/get-latest-bid-for-crop/${farmerId}/${cropId}`);
+  }
+
+  acceptCropBid(farmerId: string, buyerId: string, soldCrop: CropListingsDto) {
+    return this.dataService.updateObjectWithId(`farmer/accept-bid/${farmerId}/${soldCrop.id}/${buyerId}`, soldCrop);
   }
 }

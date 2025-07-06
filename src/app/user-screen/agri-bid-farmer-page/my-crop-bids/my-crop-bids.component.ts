@@ -7,6 +7,8 @@ import { FarmerDto } from '../../../agri-bid-home/entity/farmerDto';
 import { BidDetailsDto } from '../../agri-bid-buyer-page/crop-biddings/entity/bid-details-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptBidConfirmationModelComponent } from './accept-bid-confirmation-model/accept-bid-confirmation-model.component';
+import { Router } from '@angular/router';
+import { QuickChatDto } from '../../entity/quick-chat-dto';
 
 @Component({
   selector: 'app-my-crop-bids',
@@ -36,7 +38,7 @@ export class MyCropBidsComponent {
   latestBidData: BidDetailsDto = new BidDetailsDto();
 
   constructor(private myCropBidsService: MyCropBidsService, private regionDataService: RegionDataService, private localStorageService: LocalStorageService,
-    private model: MatDialog
+    private model: MatDialog, private router: Router
   ) { }
 
   ngOnInit() {
@@ -162,5 +164,13 @@ export class MyCropBidsComponent {
         this.cropBidsList.splice(cropBidIndex, 1);
       }
     })
+  }
+
+  chatWithBuyer(bidDetails: BidDetailsDto) {
+    let chatDetails = new QuickChatDto();
+    chatDetails.receverId = bidDetails.buyerId;
+    chatDetails.receverName = bidDetails.buyerName;
+    chatDetails.receverMobile = bidDetails.buyerPhone;
+    this.router.navigate(['user/farmer/quick-chat'], { queryParams: { chatDetails: JSON.stringify(chatDetails) } })
   }
 }

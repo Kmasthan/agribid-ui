@@ -78,6 +78,7 @@
                     <th scope="col">Crop&nbsp;Name</th>
                     <th scope="col">Weight</th>
                     <th scope="col">Quality</th>
+                    <th scope="col" class="text-center">Quick Chat</th>
                     <th scope="col" class="text-center">View&nbsp;/&nbsp;Place&nbsp;Bid</th>
                 </tr>
             </thead>
@@ -88,6 +89,10 @@
                     <td>{{ biddingCrop?.cropData?.cropName }}</td>
                     <td>{{ biddingCrop?.cropData?.weight }}&nbsp;{{ biddingCrop?.cropData?.measure }}</td>
                     <td>{{ biddingCrop?.cropData?.quality }}</td>
+                    <td class="text-center">
+                        <i class="fa-solid fa-comments fs-3 text-primary" role="button"
+                            (click)="quickChatWithFarmer(biddingCrop)"></i>
+                    </td>
                     <td class="text-center">
                         <i class="fa-solid fa-circle-right fs-3"
                             [ngClass]="selectedCropIndex == i ? 'text-warning' : 'text-success'" role="button"

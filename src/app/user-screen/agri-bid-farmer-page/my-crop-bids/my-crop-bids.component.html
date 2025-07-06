@@ -69,7 +69,7 @@
 
 <div class="row ps-3 pe-2" *ngIf="cropBidsList.length > 0">
     <div class="col-12 col-sm-6 col-md-4 col-lg-3 mb-3" *ngFor="let cropBid of cropBidsList; index as i">
-        <mat-card class="w-100" appearance="outlined">
+        <mat-card class="w-100 h-100" appearance="outlined" style="min-height: 100%;">
             <mat-card-header class="border border-bottom pb-3">
                 <mat-card-title-group>
                     <mat-card-title>{{ cropBid.cropDetails.cropName }}</mat-card-title>
@@ -109,7 +109,7 @@
                     </div>
 
                     <!-- Email -->
-                    <div>
+                    <div class="text-truncate">
                         <i class="fa-solid fa-envelope me-2 text-success"></i>
                         <strong>Email&nbsp;:&nbsp;</strong>&nbsp;{{cropBid.bidDetails.buyerEmail}}
                     </div>
@@ -139,8 +139,13 @@
                         </ng-template>
                     </div>
                 </div>
-                <div class="row float-end pt-2 pb-1">
-                    <button class="btn btn-success" (click)="acceptBidForCrop(cropBid, i)"><i class="fa-regular fa-thumbs-up"></i>&nbsp;Accept</button>
+                <div class="row float-end pt-2 pb-1 me-2">
+                    <button class="btn btn-success" (click)="acceptBidForCrop(cropBid, i)"><i
+                            class="fa-regular fa-thumbs-up"></i>&nbsp;Accept</button>
+                </div>
+                <div class="row float-end pt-2 pb-1 me-3">
+                    <button class="btn btn-primary" title="Chat with buyer" (click)="chatWithBuyer(cropBid.bidDetails)"><i
+                            class="fa-solid fa-comments"></i>&nbsp;Chat</button>
                 </div>
             </mat-card-content>
         </mat-card>

@@ -1,10 +1,20 @@
 html,
 body {
-    height: 100%;
+    height: calc(100vh - 60px);
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    position: fixed;
     /* Optional: prevents scrollbars */
+}
+
+.custome-height-1 {
+    height: 86vh;
+    overflow: auto;
+}
+
+.custome-height-2 {
+    height: 70vh;
+    overflow: auto;
 }
 
 .user-icon {
@@ -14,5 +24,28 @@ body {
     height: 32px;
     text-align: center;
     line-height: 16px;
-  }
-  
+}
+
+/* Position the input area fixed to the bottom */
+.fixed-bottom-chat {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    /* Ensures input background is solid */
+    z-index: 10;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Adjust the chat window to make room for the input */
+#chatWindow {
+    padding-bottom: 70px;
+    /* Adjust this height based on the input area height */
+    overflow-y: auto;
+}
+
+/* Optional: Adding some padding/margin to prevent the input area from sticking too tightly */
+.fixed-bottom-chat .row {
+    margin-bottom: 10px;
+}

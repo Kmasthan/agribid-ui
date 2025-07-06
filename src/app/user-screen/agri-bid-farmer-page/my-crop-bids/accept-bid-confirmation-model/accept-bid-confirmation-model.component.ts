@@ -1,11 +1,10 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { CropBidsDto } from '../entity/crop-bids-dto';
-import { CropListingsService } from '../../crop-listings/crop-listings.service';
 import { FarmerDto } from '../../../../agri-bid-home/entity/farmerDto';
 import { LocalStorageService } from '../../../../local-storage.servive';
 import { CropListingsDto } from '../../crop-listings/entity/crop-listing-dto';
-import { error } from 'console';
+import { MyCropBidsService } from '../my-crop-bids.service';
 
 @Component({
   selector: 'app-accept-bid-confirmation-model',
@@ -24,7 +23,7 @@ export class AcceptBidConfirmationModelComponent {
   soldCrop: CropListingsDto = new CropListingsDto()
 
   constructor(private dialogRef: MatDialogRef<AcceptBidConfirmationModelComponent>, @Inject(MAT_DIALOG_DATA) private dialogData: any,
-    private cropListingService: CropListingsService, private localStorageService: LocalStorageService) { }
+    private myCropBidsService: MyCropBidsService, private localStorageService: LocalStorageService) { }
 
 
   ngOnInit() {
@@ -42,7 +41,7 @@ export class AcceptBidConfirmationModelComponent {
   acceptBid() {
     this.soldCrop = this.acceptedCropBid.cropDetails;
     this.soldCrop.status = "SOLD";
-    this.cropListingService.updateCropInListing(this.farmerId, this.soldCrop).subscribe({
+    this.myCropBidsService.acceptCropBid(this.farmerId, this.acceptedCropBid.bidDetails.buyerId, this.soldCrop, ).subscribe({
       next: (data) => {
         this.responseMsg = data.message;
       },

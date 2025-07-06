@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LocalStorageService } from '../../../local-storage.servive';
 import { BuyerDto } from '../../../agri-bid-home/entity/buyerDto';
 import { CropBiddingsService } from './crop-biddings.service';
@@ -8,6 +8,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlaceNewBidModelComponent } from './place-new-bid-model/place-new-bid-model.component';
 import { BidDetailsDto } from './entity/bid-details-dto';
 import { RegionDataService } from '../../region-data/region-data.service';
+import { Router } from '@angular/router';
+import { QuickChatDto } from '../../entity/quick-chat-dto';
 
 @Component({
   selector: 'app-crop-biddings',
@@ -15,7 +17,7 @@ import { RegionDataService } from '../../region-data/region-data.service';
   templateUrl: './crop-biddings.component.html',
   styleUrl: './crop-biddings.component.css'
 })
-export class CropBiddingsComponent {
+export class CropBiddingsComponent implements OnInit, OnDestroy {
   user: BuyerDto = new BuyerDto();
 
   countrisList: string[] = [];
@@ -44,7 +46,7 @@ export class CropBiddingsComponent {
   intervalId: any;
 
   constructor(private localStorageService: LocalStorageService, private cropBiddingService: CropBiddingsService,
-    private model: MatDialog, private regionDataService: RegionDataService
+    private model: MatDialog, private regionDataService: RegionDataService, private router: Router
   ) { }
 
   ngOnInit() {
@@ -222,6 +224,14 @@ export class CropBiddingsComponent {
   editYourBid(bid: BidDetailsDto) {
     let editingBid = JSON.parse(JSON.stringify(bid));
     this.placeYourBid(editingBid);
+  }
+
+  quickChatWithFarmer(biddingCrop: CropsBiddingDto) {
+    let chatDetails = new QuickChatDto();
+    chatDetails.receverId = biddingCrop.farmerId;
+    chatDetails.receverName = biddingCrop.farmerName;
+    chatDetails.receverMobile = biddingCrop.farmerPhone;
+    this.router.navigate(['user/buyer/quick-chat'], { queryParams: { chatDetails: JSON.stringify(chatDetails) } })
   }
 
   startInterval() {

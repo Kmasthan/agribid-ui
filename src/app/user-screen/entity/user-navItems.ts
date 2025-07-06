@@ -4,4 +4,5 @@ export class UserNavItems {
     itemUsage!: string;
     path!: string;
     userType!: string;
+    position!: number;
 }

@@ -2,18 +2,18 @@ import {
   ComponentPortal,
   Overlay,
   OverlayModule
-} from "./chunk-FOS3SXKL.js";
+} from "./chunk-KM7HOL56.js";
+import {
+  CdkScrollableModule,
+  ScrollDispatcher
+} from "./chunk-HXD6YWTK.js";
 import {
   animate,
   state,
   style,
   transition,
   trigger
-} from "./chunk-HQTXRDB7.js";
-import {
-  CdkScrollableModule,
-  ScrollDispatcher
-} from "./chunk-H6RKTAAT.js";
+} from "./chunk-QZSXTLHO.js";
 import {
   A11yModule,
   AriaDescriber,
@@ -26,12 +26,12 @@ import {
   coerceNumberProperty,
   hasModifierKey,
   normalizePassiveListenerOptions
-} from "./chunk-PECWMLIL.js";
+} from "./chunk-G7BWJJHT.js";
 import {
   CommonModule,
   DOCUMENT,
   NgClass
-} from "./chunk-APQJ6POP.js";
+} from "./chunk-TVSMJGRD.js";
 import {
   ANIMATION_MODULE_TYPE,
   ChangeDetectionStrategy,
@@ -72,13 +72,13 @@ import {
   ɵɵtext,
   ɵɵtextInterpolate,
   ɵɵviewQuery
-} from "./chunk-IGJZNA3K.js";
+} from "./chunk-KY7VJF5W.js";
 import {
   Subject,
   __spreadValues,
   take,
   takeUntil
-} from "./chunk-GC5FLHL6.js";
+} from "./chunk-KM2P7SPR.js";
 
 // node_modules/@angular/material/fesm2022/tooltip.mjs
 var _c0 = ["tooltip"];
@@ -116,6 +116,7 @@ var MAT_TOOLTIP_DEFAULT_OPTIONS = new InjectionToken("mat-tooltip-default-option
   providedIn: "root",
   factory: MAT_TOOLTIP_DEFAULT_OPTIONS_FACTORY
 });
+var TOOLTIP_PANEL_CLASS = "mat-mdc-tooltip-panel";
 var PANEL_CLASS = "tooltip-panel";
 var passiveListenerOptions = normalizePassiveListenerOptions({
   passive: true
@@ -1034,7 +1035,17 @@ var MatTooltipModule = class _MatTooltipModule {
 })();
 
 export {
+  SCROLL_THROTTLE_MS,
+  getMatTooltipInvalidPositionError,
+  MAT_TOOLTIP_SCROLL_STRATEGY,
+  MAT_TOOLTIP_SCROLL_STRATEGY_FACTORY,
+  MAT_TOOLTIP_SCROLL_STRATEGY_FACTORY_PROVIDER,
+  MAT_TOOLTIP_DEFAULT_OPTIONS_FACTORY,
+  MAT_TOOLTIP_DEFAULT_OPTIONS,
+  TOOLTIP_PANEL_CLASS,
   MatTooltip,
+  TooltipComponent,
+  matTooltipAnimations,
   MatTooltipModule
 };
-//# sourceMappingURL=chunk-PHDHFHZS.js.map
+//# sourceMappingURL=chunk-Z44N6NKS.js.map

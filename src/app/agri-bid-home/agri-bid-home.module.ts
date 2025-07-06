@@ -12,6 +12,7 @@ import { BuyerRegistrationModelComponent } from './buyer-registration-model/buye
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { UserLoginPageModelComponent } from './user-login-page-model/user-login-page-model.component';
 import { UserLoginPageModelService } from './user-login-page-model/user-login-page-model.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 
@@ -23,7 +24,8 @@ import { UserLoginPageModelService } from './user-login-page-model/user-login-pa
     AgriBidHomeRoutingModule,
     MatDialogModule,
     FormsModule, 
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatTooltip
   ],
   providers: [FarmerRegistrationModelService, BuyerRegistrationModelService, UserLoginPageModelService]
 })

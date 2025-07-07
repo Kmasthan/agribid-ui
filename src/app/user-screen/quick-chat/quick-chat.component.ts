@@ -132,7 +132,7 @@ export class QuickChatComponent implements OnInit, OnDestroy {
   startIntervel() {
     if (!this.intervalId) {
       this.intervalId = setInterval(() => {
-        // this.selectUser(this.selectedReceiver);
+        this.selectUser(this.selectedReceiver);
       }, 30000)
     }
   }

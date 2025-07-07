@@ -4,7 +4,6 @@ import { Observable, throwError } from 'rxjs';
 import { Environmet } from '../environments/environment';
 import { catchError, map } from 'rxjs/operators';
 import { SprinnerLoadingService } from './spinner-loading.service';
-import { response } from 'express';
 
 @Injectable({
   providedIn: 'root'
@@ -115,6 +114,32 @@ export class DataService {
       }),
       catchError((error) => {
         this.sprinnerLoadingService.setLoading(false);
+        return throwError(() => this.errorBuilder(error))
+      })
+    )
+  }
+
+  // postDataWithOutSpinnerLoading() is to perform the POST request
+  postDataWithOutSpinnerLoading(path: string, object: any): Observable<any> {
+    const url = `${Environmet.apiUrl}/${path}`;
+    return this.httpClient.post(url, object).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
+        return throwError(() => this.errorBuilder(error));
+      })
+    );
+  }
+
+  // getObjectsWithPath() is to get the Data using GET request
+  getObjectsWithPathWithOutSpinnerLoading(path: string): Observable<any> {
+    const url = `${Environmet.apiUrl}/${path}`;
+    return this.httpClient.get(url).pipe(
+      map((response) => {
+        return response;
+      }),
+      catchError((error) => {
         return throwError(() => this.errorBuilder(error))
       })
     )

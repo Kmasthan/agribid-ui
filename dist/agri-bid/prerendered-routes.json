@@ -5,6 +5,7 @@
     "/user/buyer",
     "/user/buyer/crop-bidding",
     "/user/buyer/dashboard",
+    "/user/buyer/quick-chat",
     "/user/crop-bidding",
     "/user/crop-listings",
     "/user/dashboard",
@@ -12,6 +13,8 @@
     "/user/farmer/crop-listings",
     "/user/farmer/dashboard",
     "/user/farmer/my-crop-bids",
-    "/user/my-crop-bids"
+    "/user/farmer/quick-chat",
+    "/user/my-crop-bids",
+    "/user/quick-chat"
   ]
 }

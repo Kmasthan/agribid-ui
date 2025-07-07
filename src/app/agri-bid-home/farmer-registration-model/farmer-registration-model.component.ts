@@ -19,13 +19,21 @@ export class FarmerRegistrationModelComponent {
   registrationMsg!: string;
   isRegistrationError: boolean = false;
 
+  profileImageUrl!: string | null;
+  file!: any | null;
+
   constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService,
     private router: Router, private localStorageService: LocalStorageService, private spinnerLoadingService: SprinnerLoadingService
   ) { }
 
   onSubmitFarmerRegistration() {
     this.farmer.userType = UserTypes[UserTypes.FARMER];
-    this.farmerRegService.saveFarmerRegisterData(this.farmer).subscribe({
+
+    const formData = new FormData();
+    formData.append("farmer", new Blob([JSON.stringify(this.farmer)], { type: 'application/json' }))
+    formData.append("imageFile", this.file)
+
+    this.farmerRegService.saveFarmerRegisterData(formData).subscribe({
       next: (response) => {
         // To show the success message in registration model
         this.isRegistrationError = false;
@@ -49,6 +57,22 @@ export class FarmerRegistrationModelComponent {
         console.info('Registration completed successfully');
       }
     });
+  }
+
+  /**
+   * On selecting the user profile image
+   * @param event 
+   */
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      this.file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.profileImageUrl = e.target.result;
+      };
+      reader.readAsDataURL(this.file);
+    }
   }
 
   closeRegistrationModel() {

@@ -1,11 +1,28 @@
 <div class="app-backgroud-color" name="farmer-registration-form">
-    <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeRegistrationModel()"></i></div>
-    <div class="row">
+    <div class="p-0 w-100">
+        <i class="fa fa-times fs-4 float-end pe-1" (click)="closeRegistrationModel()" role="button"></i>
+    </div>
+    <div class="row border-bottom">
         <div class="col-md-12 text-center fs-4 pt-2">
             Farmer Registration
         </div>
         <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isRegistrationError ? 'text-danger' : 'text-success'">
-           {{registrationMsg}}
+            {{registrationMsg}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center pt-2">
+            <div class="">
+                <img [src]="profileImageUrl ?? '/assets/user.png'" class="w-25 rounded-circle">
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;"
+                    (change)="onFileSelected($event)" #fileInput>
+
+                <div class="pt-1">
+                    <i class="fa-solid fa-cloud-arrow-up fs-5 text-primary" role="button" matTooltip="Upload Image"
+                        matTooltipPosition="below" (click)="fileInput.click()"></i>
+                </div>
+            </div>
         </div>
     </div>
 

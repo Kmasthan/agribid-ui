@@ -9,4 +9,5 @@ export class FarmerDto {
     mandal!: string;
     village!: string;
     userType!: string;
+    imageUrl!: string;
 }

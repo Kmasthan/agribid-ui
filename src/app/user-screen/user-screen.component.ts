@@ -1,5 +1,5 @@
 import { Component, HostListener, Inject, PLATFORM_ID } from '@angular/core';
-import { UserNavItems } from './entiry/user-navItems';
+import { UserNavItems } from './entity/user-navItems';
 import { UserScreenService } from './user-screen.service';
 import { LocalStorageService } from '../local-storage.servive';
 import { Router } from '@angular/router';
@@ -18,11 +18,19 @@ export class UserScreenComponent {
   isSidebarOpen = false;
   isLargeScreen = true;
 
+  isUserInfOpen = false;
+
+  loggedInUser!: any | null;
+
   constructor(private userScreenService: UserScreenService, private localStorageService: LocalStorageService,
     private router: Router, @Inject(PLATFORM_ID) private platformId: Object) { }
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  toggleUserInfo() {
+    this.isUserInfOpen = !this.isUserInfOpen;
   }
 
   @HostListener('window:resize', ['$event'])
@@ -39,9 +47,9 @@ export class UserScreenComponent {
       this.isLargeScreen = window.innerWidth >= 768;
     }
 
-    const loggedInUser = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : null;
-    if (loggedInUser != null) {
-      this.getLeftNavItemsForTheUser(loggedInUser.userType);
+    this.loggedInUser = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : null;
+    if (this.loggedInUser != null) {
+      this.getLeftNavItemsForTheUser(this.loggedInUser.userType);
     }
   }
 

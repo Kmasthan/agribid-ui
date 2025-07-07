@@ -24,6 +24,14 @@ export class LocalStorageService {
         return null
     }
 
+    getLoggedInUserId() {
+        let userString = this.getLoggedInUser();
+        if (userString) {
+            return JSON.parse(userString).id;
+        }
+        return null;
+    }
+
     remove(key: string): void {
         localStorage.removeItem(key);
     }

@@ -1,0 +1,85 @@
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active text-dark" aria-current="page"><i
+                class="fa-solid fa-comments"></i>&nbsp;&nbsp;Quick Chat</li>
+    </ol>
+</nav>
+
+<div class="row g-0 custome-height-1" *ngIf="userConversations.length > 0; else noConvo">
+    <!-- Sidebar / User List -->
+    <div class="col-md-3 border-end bg-light">
+        <mat-toolbar color="primary">QuickConvo</mat-toolbar>
+        <mat-list>
+            <mat-list-item *ngFor="let conversation of userConversations" (click)="selectUser(conversation)">
+                <i class="fa-solid fa-user fs-6 bg-success user-icon" role="button"></i>&nbsp;<span role="button">{{
+                    conversation.receverName
+                    }}</span>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+    <!-- Chat Area -->
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-12">
+                <mat-toolbar color="primary">{{ selectedReceiver?.receverName || 'Select a user' }}</mat-toolbar>
+                <div class="flex-grow-1 p-3 bg-light custome-height-2" id="chatWindow">
+                    <ng-container *ngIf="selectedReceiver?.conversations?.length > 0; else noMessages">
+                        <div *ngFor="let convo of selectedReceiver?.conversations; index as i">
+                            <div class="message-bubble accordion-item">
+                                <div [ngClass]="convo.senderId === user.id ? 'text-end' : 'text-start'">
+                                    <span
+                                        [ngClass]="{ 'bg-primary': convo.senderId === user.id, 'bg-success': convo.senderId !== user.id }"
+                                        class="d-inline-block my-1 px-3 py-2 rounded-pill text-white"
+                                        (mouseenter)="hoveredMsgIndex = i;  onClick()"
+                                        (mouseleave)="activeAccordianIndex = hoveredMsgIndex">
+                                        {{ convo.message }}
+                                        <i *ngIf="hoveredMsgIndex == i" class="fa-solid fa-chevron-down ms-1 p-1 fs-6"
+                                            [attr.id]="'message' + i" type="button" data-bs-toggle="collapse"
+                                            [attr.data-bs-target]="'#msgDetails' + i" aria-expanded="false"
+                                            [attr.aria-controls]="'msgDetails' + i"></i>
+                                    </span>
+                                </div>
+
+                                <div [attr.id]="'msgDetails' + i" class="accordion-collapse collapse ps-4"
+                                    [ngClass]="{ 'float-end': convo.senderId === user.id}" data-bs-parent="#chatWindow">
+                                    <div class="accordion-body">
+                                        <i class="fa-solid fa-circle-info pe-4" role="button" matTooltip="Message info"
+                                            matTooltipPosition="below"></i>
+                                        <i class="fa-solid fa-pen pe-4" role="button" matTooltip="Edit message"
+                                            matTooltipPosition="below"></i>
+                                        <i class="fa-solid fa-trash pe-4" role="button" matTooltip="Delete message"
+                                            matTooltipPosition="below"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <ng-template #noMessages>
+                        <div *ngIf="!selectedReceiver" class="text-center fs-5 mt-4">
+                            Select the user to communicate&nbsp;<strong></strong>.</div>
+                        <div *ngIf="selectedReceiver" class="text-center fs-5 mt-4">
+                            Not found any messages&nbsp;<strong></strong>.</div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+        <div class="row p-3" *ngIf="selectedReceiver">
+            <!-- Input Area -->
+            <div class="col-10 col-sm-11">
+                <input class="form-control" matInput placeholder="Type a message" [(ngModel)]="newMessage"
+                    name="message" required (keydown.enter)="newMessage && sendMessage()">
+            </div>
+            <div class="col-2 col-sm-1 text-center">
+                <i class="fa-solid fa-paper-plane fs-4 p-2" [class.text-success]="newMessage"
+                    [class.text-muted]="!newMessage" [class.disabled]="!newMessage" role="button"
+                    [style.pointer-events]="newMessage ? 'auto' : 'none'" (click)="newMessage && sendMessage()">
+                </i>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template #noConvo>
+    <div class="text-center fs-5 mt-4">
+        Not found any communications&nbsp;<strong></strong>.</div>
+</ng-template>

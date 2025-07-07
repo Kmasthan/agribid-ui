@@ -6,7 +6,7 @@ import { MyCropBidsComponent } from './my-crop-bids/my-crop-bids.component';
 
 const routes: Routes = [
   {
-    path:"", redirectTo: 'dashboard', pathMatch: "full"
+    path: "", redirectTo: 'dashboard', pathMatch: "full"
   },
   {
     path: "dashboard",
@@ -19,6 +19,10 @@ const routes: Routes = [
   {
     path: 'my-crop-bids',
     component: MyCropBidsComponent
+  },
+  {
+    path: 'quick-chat',
+    loadComponent: () => import('../quick-chat/quick-chat.component').then(c => c.QuickChatComponent)
   }
 ];
 

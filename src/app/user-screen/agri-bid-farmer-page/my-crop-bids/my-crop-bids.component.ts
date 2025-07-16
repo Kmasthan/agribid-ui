@@ -7,8 +7,9 @@ import { FarmerDto } from '../../../agri-bid-home/entity/farmerDto';
 import { BidDetailsDto } from '../../agri-bid-buyer-page/crop-biddings/entity/bid-details-dto';
 import { MatDialog } from '@angular/material/dialog';
 import { AcceptBidConfirmationModelComponent } from './accept-bid-confirmation-model/accept-bid-confirmation-model.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuickChatDto } from '../../entity/quick-chat-dto';
+import { CropListingsDto } from '../crop-listings/entity/crop-listing-dto';
 
 @Component({
   selector: 'app-my-crop-bids',
@@ -37,12 +38,25 @@ export class MyCropBidsComponent {
   cropBidsList: CropBidsDto[] = [];
   latestBidData: BidDetailsDto = new BidDetailsDto();
 
+  routedCropDetails!: CropListingsDto;
+
   constructor(private myCropBidsService: MyCropBidsService, private regionDataService: RegionDataService, private localStorageService: LocalStorageService,
-    private model: MatDialog, private router: Router
+    private model: MatDialog, private router: Router, private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.user = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : new FarmerDto();
+    this.route.queryParams.subscribe(params => {
+      if (params['cropDetails']) {
+        this.routedCropDetails = JSON.parse(params['cropDetails']);
+        if (this.routedCropDetails) {
+          this.selectedCountry = this.routedCropDetails.country;
+          this.selectedState = this.routedCropDetails.state;
+          this.selectedDistrict = this.routedCropDetails.district;
+          this.selectedVillage = this.routedCropDetails.village;
+        }
+      }
+    })
     this.getCountriesList();
   }
 
@@ -51,7 +65,9 @@ export class MyCropBidsComponent {
       next: (data) => {
         this.countrisList = <string[]>data;
         if (this.countrisList && this.countrisList.length > 0) {
-          this.selectedCountry = this.countrisList[0];
+          if (!this.selectedCountry) {
+            this.selectedCountry = this.countrisList[0];
+          }
           this.getStatesList(this.selectedCountry);
         }
       },
@@ -69,7 +85,9 @@ export class MyCropBidsComponent {
       next: (data) => {
         this.statesList = <string[]>data;
         if (this.statesList && this.statesList.length > 0) {
-          this.selectedState = this.statesList[0];
+          if (!this.selectedState) {
+            this.selectedState = this.statesList[0];
+          }
           this.getDistrictsList(this.selectedCountry, this.selectedState);
         }
       },
@@ -87,7 +105,9 @@ export class MyCropBidsComponent {
       next: (data) => {
         this.districtsList = <string[]>data;
         if (this.districtsList && this.districtsList.length > 0) {
-          this.selectedDistrict = this.districtsList[0];
+          if (!this.selectedDistrict) {
+            this.selectedDistrict = this.districtsList[0];
+          }
           this.getVillagesList(this.selectedCountry, this.selectedState, this.selectedDistrict);
         }
       },
@@ -110,6 +130,7 @@ export class MyCropBidsComponent {
       },
       error: (error) => {
         this.villagesList = [];
+        this.cropBidsList = [];
       },
       complete: () => {
         this.getBiddedCropsDetails();

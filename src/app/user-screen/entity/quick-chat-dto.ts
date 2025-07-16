@@ -8,6 +8,7 @@ export class QuickChatDto {
     receverMobile!: string;
     message!: string;
     edited!: boolean;
+    imageUrl!: string;
     createdAt = new Date();
     modifiedAt = new Date();
 

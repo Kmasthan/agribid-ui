@@ -73,4 +73,38 @@ footer {
     width: 100%;
     background-color: #e8d5b0;
 }
+
+/* Styles for the user image in the header */
+.user-image {
+    /* Set a fixed size for the container of the profile image */
+    /* This height is derived from the header's 60px height minus padding (1rem top/bottom in your header.css is 16px*2 = 32px) */
+    /* If your header's actual inner height is around 40-50px after padding, choose a size within that range. */
+    /* Let's assume the effective vertical space is about 40px for a 60px high header with 1rem padding. */
+    width: 40px;
+    /* Example size for the circular image */
+    height: 40px;
+    /* Example size for the circular image */
+    border-radius: 50%;
+    /* Make the container circular */
+    overflow: hidden;
+    /* Crucial: Clips content outside the circle */
+    display: flex;
+    /* Use flexbox to center the image within this container */
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    /* Prevent the image container from shrinking under pressure */
+  }
+  
+  .profile-header-image {
+    /* Make the image fill its .user-image parent container */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Crop and scale the image to cover the container without distortion */
+    border-radius: 50%;
+    /* Ensure the image itself is also circular */
+    display: block;
+    /* Removes extra space below the image */
+  }
   

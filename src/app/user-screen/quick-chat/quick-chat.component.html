@@ -7,22 +7,27 @@
 
 <div class="row g-0 custome-height-1" *ngIf="userConversations.length > 0; else noConvo">
     <!-- Sidebar / User List -->
-    <div class="col-md-3 border-end bg-light">
+    <div class="col-md-3 border-end bg-light" *ngIf="isUserListOpen">
         <mat-toolbar color="primary">QuickConvo</mat-toolbar>
         <mat-list>
             <mat-list-item *ngFor="let conversation of userConversations" (click)="selectUser(conversation)">
-                <i class="fa-solid fa-user fs-6 bg-success user-icon" role="button"></i>&nbsp;<span role="button">{{
-                    conversation.receverName
-                    }}</span>
+                <div class="d-flex justify-content-start align-items-center">
+                    <div class="user-image border border-circle border-success">
+                        <img [src]="conversation?.imageUrl ?? '/assets/user.png'" class="profile-header-image" alt="">
+                    </div>
+                    <span class="ms-2 fs-5" role="button">{{ conversation.receverName }}</span>
+                </div>
             </mat-list-item>
         </mat-list>
     </div>
 
     <!-- Chat Area -->
-    <div class="col-md-9">
+    <div class="col-md-9" *ngIf="isChatAreaOpen">
         <div class="row">
             <div class="col-12">
-                <mat-toolbar color="primary">{{ selectedReceiver?.receverName || 'Select a user' }}</mat-toolbar>
+                <mat-toolbar color="primary">
+                    <i class="fa fa-bars me-3" *ngIf="!isLargeScreen" role="button" (click)="toggleUsersList()"></i>
+                    {{ selectedReceiver?.receverName || 'Select a user' }}</mat-toolbar>
                 <div class="flex-grow-1 p-3 bg-light custome-height-2" id="chatWindow">
                     <ng-container *ngIf="selectedReceiver?.conversations?.length > 0; else noMessages">
                         <div *ngFor="let convo of selectedReceiver?.conversations; index as i">
@@ -64,16 +69,17 @@
                 </div>
             </div>
         </div>
-        <div class="row p-3" *ngIf="selectedReceiver">
+        <div class="row p-3 align-items-center" *ngIf="selectedReceiver">
             <!-- Input Area -->
             <div class="col-10 col-sm-11">
-                <input class="form-control" matInput placeholder="Type a message" [(ngModel)]="newMessage"
-                    name="message" required (keydown.enter)="newMessage && sendMessage()">
+                <textarea class="form-control" matInput placeholder="Type a message" [(ngModel)]="newMessage"
+                    name="message" required (keydown.enter)="newMessage && sendMessage()"></textarea>
             </div>
             <div class="col-2 col-sm-1 text-center">
-                <i class="fa-solid fa-paper-plane fs-4 p-2" [class.text-success]="newMessage"
-                    [class.text-muted]="!newMessage" [class.disabled]="!newMessage" role="button"
-                    [style.pointer-events]="newMessage ? 'auto' : 'none'" (click)="newMessage && sendMessage()">
+                <i class="fa-solid fa-paper-plane fs-3 p-2" [class.text-success]="newMessage?.trim()"
+                    [class.text-muted]="!newMessage?.trim()" [class.disabled]="!newMessage?.trim()" role="button"
+                    [style.pointer-events]="newMessage?.trim() ? 'auto' : 'none'"
+                    (click)="newMessage?.trim() && sendMessage()">
                 </i>
             </div>
         </div>

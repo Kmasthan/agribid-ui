@@ -1,1 +1,66 @@
-<p>buyer-dashboard works!</p>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active text-dark" aria-current="page"><i
+                class="fa-solid fa-users-gear"></i>&nbsp;&nbsp;Dashboard</li>
+    </ol>
+</nav>
+<div class="row p-2">
+    <div class="card col-12 col-md-4 col-sm-4 p-0 shadow">
+        <div class="text-center border border-bottom fs-3 p-2">Active Bids</div>
+        <div class="card-body pt-2 pb-2 ps-1 pe-1">
+            <table class="table mb-0" *ngIf="bidDetailsList && bidDetailsList.length > 0">
+                <thead class="thead-light">
+                    <tr class="table-success">
+                        <th scope="col">#</th>
+                        <th scope="col">Position</th>
+                        <th scope="col" class="text-center">Crop</th>
+                        <th scope="col">Your Bid</th>
+                        <th scope="col">Top Bid</th>
+                        <th scope="col" class="text-center">Bidding</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let bid of bidDetailsList; index as i" class="bg-success">
+                        <td scope="row">{{ i + 1 }}</td>
+                        <td class="fw-bold" [ngClass]="{'text-center': bid.position != 1}">
+                            <div class="fs-5" [ngClass]="{'float-start': bid.position == 1}">{{ bid.position }}</div>
+                            <div *ngIf="bid.position == 1">&nbsp;&nbsp;<i
+                                    class="fa-solid fa-ranking-star text-success"></i></div>
+                        </td>
+                        <td class="text-center"><i class="fa-solid fa-circle-info"
+                                [ngClass]="selectedBidCropInfo == i ? 'text-primary' : 'text-dark'"
+                                matTooltip="Crop Info" matTooltipPosition="below" (click)="showCropInfo(i)"
+                                role="button"></i>
+                            <!-- Crop Details Card Starts -->
+                            <div [hidden]="selectedBidCropInfo != i">
+                                <div
+                                    class="position-absolute shadow end-0 bottom-0 bg-white p-2 border border-success rounded">
+                                    <!-- Crop Name -->
+                                    <div class="text-start">
+                                        <strong>Crop&nbsp;:&nbsp;</strong>&nbsp;{{bid.cropDetails.cropName}}
+                                    </div>
+
+                                    <!-- Quantity -->
+                                    <div class="text-start">
+                                        <strong>Quantity&nbsp;:&nbsp;</strong>&nbsp;{{bid.cropDetails.weight}}&nbsp;{{bid.cropDetails.measure}}
+                                    </div>
+
+                                    <!-- Place -->
+                                    <div class="text-truncate text-start">
+                                        <strong>Place&nbsp;:&nbsp;</strong>&nbsp;{{bid.cropDetails.village}}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Crop Details Card Ends -->
+                        </td>
+                        <td>{{ bid.userBidAmount }}&nbsp;{{ bid.userBidCurrency }}</td>
+                        <td>{{ bid.topBidAmount }}&nbsp;{{ bid.topBidAmountCurrency }}</td>
+                        <td class="text-center"><i class="fa-solid fa-circle-right fs-4 text-primary"
+                                matTooltip="Go to bidding" matTooltipPosition="below" role="button"
+                                (click)="goToBidding(bid)"></i></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

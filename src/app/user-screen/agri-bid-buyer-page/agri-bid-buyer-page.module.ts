@@ -14,6 +14,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { PlaceNewBidModelComponent } from './crop-biddings/place-new-bid-model/place-new-bid-model.component';
 import { MatRadioModule } from '@angular/material/radio'
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import { MatRadioModule } from '@angular/material/radio'
     MatInputModule,
     MatFormFieldModule,
     FormsModule,
-    MatRadioModule
+    MatRadioModule,
+    MatTooltip
   ], 
   providers: [BuyerDashboardService, CropBiddingsService]
 })

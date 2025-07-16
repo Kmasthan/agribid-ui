@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { FarmerDto } from '../entity/farmerDto';
 import { MatDialogRef } from '@angular/material/dialog';
 import { FarmerRegistrationModelService } from './farmer-registration-model.service';
@@ -6,6 +6,8 @@ import { UserTypes } from '../entity/userTypes';
 import { Router } from '@angular/router';
 import { LocalStorageService } from '../../local-storage.servive';
 import { SprinnerLoadingService } from '../../spinner-loading.service';
+import { LanguageSelectionService } from '../../language-selection.service';
+import { LabelConstants } from '../../label-constants/label-constants';
 @Component({
   selector: 'app-farmer-registration-model',
   standalone: false,
@@ -22,9 +24,19 @@ export class FarmerRegistrationModelComponent {
   profileImageUrl!: string | null;
   file!: any | null;
 
+  labelConstants!: LabelConstants;
+
   constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private farmerRegService: FarmerRegistrationModelService,
-    private router: Router, private localStorageService: LocalStorageService, private spinnerLoadingService: SprinnerLoadingService
+    private router: Router, private localStorageService: LocalStorageService, private spinnerLoadingService: SprinnerLoadingService,
+    private languageSelectionService: LanguageSelectionService, private cdr: ChangeDetectorRef
   ) { }
+
+  ngOnInit() {
+    this.languageSelectionService.getSelectedLabels$.subscribe((labels) => {
+      this.labelConstants = labels;
+      this.cdr.detectChanges();
+    });
+  }
 
   onSubmitFarmerRegistration() {
     this.farmer.userType = UserTypes[UserTypes.FARMER];

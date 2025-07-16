@@ -1,10 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FarmerRegistrationModelComponent } from '../farmer-registration-model/farmer-registration-model.component';
 import { BuyerRegistrationModelComponent } from '../buyer-registration-model/buyer-registration-model.component';
 import { UserLoginPageModelComponent } from '../user-login-page-model/user-login-page-model.component';
 import { LocalStorageService } from '../../local-storage.servive';
 import { Router } from '@angular/router';
+import { LabelConstants } from '../../label-constants/label-constants';
+import { LabelConstantsFactory } from '../../label-constants/label-constant-factory';
+import { LanguageSelectionService } from '../../language-selection.service';
+import { SessionStorageService } from '../../session-storage.service';
 
 @Component({
   selector: 'app-agri-bid-home-page',
@@ -13,11 +17,24 @@ import { Router } from '@angular/router';
   styleUrl: './agri-bid-home-page.component.css'
 })
 export class AgriBidHomePageComponent {
-  constructor(private model: MatDialog, private localStorageService: LocalStorageService, private router: Router) {
+
+  labelConstants!: LabelConstants;
+
+  languageOptions: string[] = LabelConstantsFactory.getSupportedLanguages();
+  selectedLanguage: string = this.languageOptions[0];
+  searchLanguageValue!: string;
+  isShowLanguageSelection: boolean = true;
+
+  constructor(private model: MatDialog, private localStorageService: LocalStorageService, private router: Router,
+    private languageSelectionService: LanguageSelectionService, private sessionStorageService: SessionStorageService
+  ) {
 
   }
 
   ngOnInit() {
+    this.labelConstants = LabelConstantsFactory.getLabels(this.selectedLanguage);
+    this.setSelectedLabelToLanguageSelectionService(this.labelConstants);
+    this.setSelectedLanguageToSessionStorage(this.selectedLanguage);
     setTimeout(() => {
       this.userLoggedInAlredy();
     }, 0);
@@ -55,5 +72,26 @@ export class AgriBidHomePageComponent {
       disableClose: true,
       data: {}
     })
+  }
+
+  onLanguageSelection() {
+    this.labelConstants = LabelConstantsFactory.getLabels(this.selectedLanguage);
+    this.setSelectedLabelToLanguageSelectionService(this.labelConstants);
+    this.setSelectedLanguageToSessionStorage(this.selectedLanguage);
+    setTimeout(() => {
+      this.onClickLanguageChnage()
+    }, 200)
+  }
+
+  onClickLanguageChnage() {
+    this.isShowLanguageSelection = !this.isShowLanguageSelection;
+  }
+
+  setSelectedLabelToLanguageSelectionService(labelConstants: LabelConstants) {
+    this.languageSelectionService.setSelectedLabelConstant(labelConstants);
+  }
+
+  setSelectedLanguageToSessionStorage(selectedLanguage: string) {
+    this.sessionStorageService.setSelectedLanguage(selectedLanguage);
   }
 }

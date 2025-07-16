@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { ChangeDetectorRef, Component, signal } from '@angular/core';
 import { LoginDto } from '../entity/loginDto';
 import { UserLoginPageModelService } from './user-login-page-model.service';
 import { error } from 'console';
@@ -8,6 +8,8 @@ import { FarmerDto } from '../entity/farmerDto';
 import { BuyerDto } from '../entity/buyerDto';
 import { LocalStorageService } from '../../local-storage.servive';
 import { Router } from '@angular/router';
+import { LabelConstants } from '../../label-constants/label-constants';
+import { LanguageSelectionService } from '../../language-selection.service';
 
 @Component({
   selector: 'app-user-login-page-model',
@@ -31,8 +33,18 @@ export class UserLoginPageModelComponent {
 
   loginErrorMsg: string = '';
 
+  labelConstants!: LabelConstants;
+
   constructor(private dialogRef: MatDialogRef<FarmerRegistrationModelComponent>, private userLoginPageService: UserLoginPageModelService,
-    private localStorageService: LocalStorageService, private router: Router) { }
+    private localStorageService: LocalStorageService, private router: Router, private languageSelectionService: LanguageSelectionService,
+    private cdr: ChangeDetectorRef) { }
+
+  ngOnInit() {
+    this.languageSelectionService.getSelectedLabels$.subscribe((labels) => {
+      this.labelConstants = labels;
+      this.cdr.detectChanges();
+    });
+  }
 
   userLogin() {
     this.disableLogin = true;
@@ -41,7 +53,7 @@ export class UserLoginPageModelComponent {
       next: (data) => {
         this.closeLoginForm();
         this.localStorageService.setLoggedInUser(JSON.stringify(data))
-          this.router.navigate(['/user']);
+        this.router.navigate(['/user']);
       },
       error: (error) => {
         this.loginErrorMsg = error.message;

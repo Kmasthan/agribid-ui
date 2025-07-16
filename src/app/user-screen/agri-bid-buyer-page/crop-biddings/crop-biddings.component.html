@@ -73,7 +73,7 @@
     <div class="col-md-6 col-sm-6 p-0 me-4">
         <table class="table mb-0" *ngIf="biddingCropsList && biddingCropsList.length > 0; else biddingCropsNotFound">
             <thead class="thead-light">
-                <tr>
+                <tr class="table-success">
                     <th scope="col">#Sl.No</th>
                     <th scope="col">Crop&nbsp;Name</th>
                     <th scope="col">Weight</th>
@@ -123,7 +123,7 @@
         </div>
         <table class="table" *ngIf="cropBidsDetails && cropBidsDetails.length > 0; else noBidsFound">
             <thead class="thead-light">
-                <tr>
+                <tr class="table-success">
                     <th scope="col">#Rank&nbsp;/&nbsp;Position</th>
                     <th scope="col">Bid&nbsp;Amount</th>
                     <th scope="col">Bid Date</th>

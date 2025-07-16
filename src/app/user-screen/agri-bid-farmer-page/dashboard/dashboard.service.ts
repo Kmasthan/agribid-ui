@@ -4,11 +4,10 @@ import { DataService } from '../../../data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class BuyerDashboardService {
-
+export class DashboardService {
   constructor(private dataService: DataService) { }
 
-  getUserBidsDetails(userId: string) {
-    return this.dataService.getObjectsWithPath(`buyer/crop-bids-for-dashboard/${userId}`);
+  getBiddedCropsForDashBoard(userId: string) {
+    return this.dataService.getObjectsWithPath(`farmer/get-bidded-crops-dashboard/${userId}`);
   }
 }

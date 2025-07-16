@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { AgriBidFarmerPageRoutingModule } from './agri-bid-farmer-page-routing.module';
 import { CropListingsService } from './crop-listings/crop-listings.service';
 import { CropListingsComponent } from './crop-listings/crop-listings.component';
-import { MatTableModule} from '@angular/material/table';
+import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { NewCropListingModelComponent } from './crop-listings/new-crop-listing-model/new-crop-listing-model.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -18,11 +18,14 @@ import { MyCropBidsComponent } from './my-crop-bids/my-crop-bids.component';
 import { MyCropBidsService } from './my-crop-bids/my-crop-bids.service';
 import { MatCardModule } from '@angular/material/card'
 import { AcceptBidConfirmationModelComponent } from './my-crop-bids/accept-bid-confirmation-model/accept-bid-confirmation-model.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardService } from './dashboard/dashboard.service';
+import { MatTooltip } from '@angular/material/tooltip';
 
 
 
 @NgModule({
-  declarations: [CropListingsComponent, NewCropListingModelComponent, DeleteCropListingConfirmationModelComponent,
+  declarations: [DashboardComponent, CropListingsComponent, NewCropListingModelComponent, DeleteCropListingConfirmationModelComponent,
     MyCropBidsComponent, AcceptBidConfirmationModelComponent
   ],
   imports: [
@@ -36,8 +39,9 @@ import { AcceptBidConfirmationModelComponent } from './my-crop-bids/accept-bid-c
     FormsModule,
     NgxMatSelectSearchModule,
     FiltersModule,
-    MatCardModule
+    MatCardModule,
+    MatTooltip
   ],
-  providers: [CropListingsService, MyCropBidsService]
+  providers: [DashboardService, CropListingsService, MyCropBidsService]
 })
 export class AgriBidFarmerPageModule { }

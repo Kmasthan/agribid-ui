@@ -8,8 +8,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlaceNewBidModelComponent } from './place-new-bid-model/place-new-bid-model.component';
 import { BidDetailsDto } from './entity/bid-details-dto';
 import { RegionDataService } from '../../region-data/region-data.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuickChatDto } from '../../entity/quick-chat-dto';
+import { CropListingsDto } from '../../agri-bid-farmer-page/crop-listings/entity/crop-listing-dto';
 
 @Component({
   selector: 'app-crop-biddings',
@@ -39,18 +40,37 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
   isShowBiddingForm: boolean = false;
   selectedCropForBidding: CropsBiddingDto = new CropsBiddingDto();
   isBidPlacedAlredy: boolean = false;
-  selectedCropIndex!: number;
+  selectedCropIndex: number = -1;
 
   cropBidsDetails: BidDetailsDto[] = [];
-
   intervalId: any;
 
+  navigatedCropDetails!: CropListingsDto;
+  isNavigatedFromDashboard: boolean = false;
+
   constructor(private localStorageService: LocalStorageService, private cropBiddingService: CropBiddingsService,
-    private model: MatDialog, private regionDataService: RegionDataService, private router: Router
+    private model: MatDialog, private regionDataService: RegionDataService, private router: Router, private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
-    this.user = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : null;
+    let user = this.localStorageService.getLoggedInUser() != null ? JSON.parse(this.localStorageService.getLoggedInUser()!) : null;
+    if (user && user.id != null) {
+      this.user = user;
+    }
+    this.route.queryParams.subscribe(params => {
+      if (params['cropDetails']) {
+        this.navigatedCropDetails = JSON.parse(params['cropDetails']);
+        if (this.navigatedCropDetails) {
+          this.isNavigatedFromDashboard = true;
+          this.selectedCountry = this.navigatedCropDetails.country;
+          this.selectedState = this.navigatedCropDetails.state;
+          this.selectedDistrict = this.navigatedCropDetails.district;
+          this.selectedVillage = this.navigatedCropDetails.village;
+        }
+      } else {
+        this.isNavigatedFromDashboard = false;
+      }
+    })
     this.getCountriesList();
   }
 
@@ -65,7 +85,9 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.countrisList = <string[]>data;
         if (this.countrisList && this.countrisList.length > 0) {
-          this.selectedCountry = this.countrisList[0];
+          if (!this.selectedCountry) {
+            this.selectedCountry = this.countrisList[0];
+          }
           this.getStatesList(this.selectedCountry);
         }
       },
@@ -86,7 +108,9 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.statesList = <string[]>data;
         if (this.statesList && this.statesList.length > 0) {
-          this.selectedState = this.statesList[0];
+          if (!this.selectedState) {
+            this.selectedState = this.statesList[0];
+          }
           this.getDistrictsList(this.selectedCountry, this.selectedState);
         }
       },
@@ -107,7 +131,9 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
       next: (data) => {
         this.districtsList = <string[]>data;
         if (this.districtsList && this.districtsList.length > 0) {
-          this.selectedDistrict = this.districtsList[0];
+          if (!this.selectedDistrict) {
+            this.selectedDistrict = this.districtsList[0];
+          }
           this.getVillagesList(this.selectedCountry, this.selectedState, this.selectedDistrict);
         }
       },
@@ -150,6 +176,9 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
     this.cropBiddingService.getCropsListForBidding(country, state, district, village).subscribe({
       next: (data) => {
         this.biddingCropsList = <CropsBiddingDto[]>data;
+        if (this.isNavigatedFromDashboard) {
+          this.openNavigatedCropBidding(this.biddingCropsList, this.navigatedCropDetails);
+        }
       },
       error: (error) => {
         this.biddingCropsList = [];
@@ -157,6 +186,13 @@ export class CropBiddingsComponent implements OnInit, OnDestroy {
       },
       complete: () => { }
     })
+  }
+
+  openNavigatedCropBidding(biddingCropsList: CropsBiddingDto[], navigatedCropDetails: CropListingsDto) {
+    const matchedCropIndex = biddingCropsList.findIndex(biddingCrop => biddingCrop?.cropData.id == navigatedCropDetails.id);
+    if (matchedCropIndex != -1) {
+      this.viewOrPlaceBidForCrop(biddingCropsList[matchedCropIndex], matchedCropIndex);
+    }
   }
 
   viewOrPlaceBidForCrop(biddingCrop: CropsBiddingDto, selectedCropIndex: number) {

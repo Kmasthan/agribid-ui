@@ -1,62 +1,81 @@
 <div class="app-backgroud-color" name="buyer-registration-form">
     <div class="btn p-0 w-100"><i class="fa fa-times fs-4 float-end pe-1" (click)="closeRegistrationModel()"></i></div>
     <div class="row">
-        <div class="col-md-12 text-center fs-4 pt-2">
-            Buyer Registration
+        <div class="col-md-12 text-center fs-4 pt-2 fw-bold">
+            {{labelConstants.BUYER_REGISTRATION}}
         </div>
         <div class="col-md-12 text-center fs-5 pt-2" [ngClass]="isRegistrationError ? 'text-danger' : 'text-success'">
             {{registrationMessage}}
-         </div>
+        </div>
     </div>
-   
+
+    <div class="row">
+        <div class="col-12 text-center pt-2">
+            <div class="">
+                <img [src]="profileImageUrl ?? '/assets/user.png'" class="w-25 rounded-circle">
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;"
+                    (change)="onFileSelected($event)" #fileInput>
+
+                <div class="pt-1">
+                    <i class="fa-solid fa-cloud-arrow-up fs-5 text-primary" role="button"
+                        [matTooltip]="labelConstants.UPLOAD_IMAGE" matTooltipPosition="below"
+                        (click)="fileInput.click()"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form #registrationForm="ngForm" class="p-3">
         <!-- Name -->
         <div class="form-group mb-3">
-            <label>Name</label>
-            <input type="text" class="form-control" name="name" placeholder="Enter your name" [(ngModel)]="buyer.name" required />
+            <label class="fw-bold">{{labelConstants.NAME}}</label><em class="text-danger">*</em>
+            <input type="text" class="form-control" name="name" [placeholder]="labelConstants.ENTER_NAME_MSG"
+                [(ngModel)]="buyer.name" required />
             <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.name">
-                Name is required
+                {{labelConstants.NAME_REQUIRED_MSG}}
             </div>
         </div>
 
         <!-- Mobile Number -->
         <div class="form-group mb-3">
-            <label>Mobile Number</label>
-            <input type="tel" class="form-control" name="mobile" placeholder="Enter your mobile number" [(ngModel)]="buyer.mobileNumber" pattern="^[0-9]{10}$"
-                required #mobileInput="ngModel" />
+            <label class="fw-bold">{{labelConstants.MOBILE_NUMBER}}</label><em class="text-danger">*</em>
+            <input type="tel" class="form-control" name="mobile" [placeholder]="labelConstants.ENTER_MOBILE_NUMBER_MSG"
+                [(ngModel)]="buyer.mobileNumber" pattern="^[0-9]{10}$" required #mobileInput="ngModel" />
             <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.mobileNumber">
-                Mobile number is required
+                {{labelConstants.MOBILE_NUMBER_REQUIRED_MSG1}}
             </div>
             <div class="text-danger" *ngIf="buyer.mobileNumber && !mobileInput.valid">
-                Enter a valid 10-digit number
+                {{labelConstants.MOBILE_NUMBER_REQUIRED_MSG2}}
             </div>
         </div>
 
         <!-- Gmail -->
         <div class="form-group mb-3">
-            <label>Gmail</label>
-            <input type="email" class="form-control" name="email" placeholder="Enter your email" [(ngModel)]="buyer.email" required
-                #emailInput="ngModel" />
+            <label class="fw-bold">{{labelConstants.EMAIL}}</label><em class="text-danger">*</em>
+            <input type="email" class="form-control" name="email" [placeholder]="labelConstants.ENTER_EMAIL_MSG"
+                [(ngModel)]="buyer.email" required #emailInput="ngModel" />
             <div class="text-danger" *ngIf="registrationForm.submitted && !emailInput.valid">
-                A valid email is required
+                {{labelConstants.EMAIL_NOT_VALID_MSG}}
             </div>
         </div>
 
         <!-- Password -->
         <div class="form-group mb-3">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password" placeholder="Enter password" [(ngModel)]="buyer.password" required
-                minlength="6" />
+            <label class="fw-bold">{{labelConstants.PASSWORD}}</label><em class="text-danger">*</em>
+            <input type="password" class="form-control" name="password"
+                [placeholder]="labelConstants.ENTER_PASSWORD_MSG" [(ngModel)]="buyer.password" required minlength="6" />
             <div class="text-danger" *ngIf="registrationForm.submitted && !buyer.password">
-                Password is required
+                {{labelConstants.PASSWORD_REQUIRED_MSG}}
             </div>
         </div>
 
 
         <button [disabled]="!registrationForm.valid" (click)="resetBuyerRegistration()"
-            class="btn btn-danger float-end mb-2">Reset</button>
+            class="btn btn-danger float-end mb-2">
+            <i class="fa-solid fa-rotate-left text-light"></i>&nbsp;{{labelConstants.RESET}}</button>
         <!-- Submit Button -->
         <button [disabled]="!registrationForm.valid" (click)="onSubmitBuyerRegistration()"
-            class="btn btn-success float-end mb-2 me-2">Register</button>
+            class="btn btn-success float-end mb-2 me-2">
+            <i class="fa-solid fa-floppy-disk text-light"></i>&nbsp;{{labelConstants.REGISTER}}</button>
     </form>
 </div>

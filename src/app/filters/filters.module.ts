@@ -1,14 +1,15 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegionDataFilterPipe } from './region-data-filter.pipe';
+import { LanguageSelectionFilter } from './language-selection-filter.pipe';
 
 
 
 @NgModule({
-  declarations: [RegionDataFilterPipe],
+  declarations: [RegionDataFilterPipe, LanguageSelectionFilter],
   imports: [
     CommonModule
   ],
-  exports: [RegionDataFilterPipe]
+  exports: [RegionDataFilterPipe, LanguageSelectionFilter]
 })
 export class FiltersModule { }

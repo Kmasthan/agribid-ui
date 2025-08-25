@@ -1,4 +1,4 @@
-# 🌾 AgriBid – Crop Auction & Bidding System (UI)
+# AgriBid – Crop Auction & Bidding System (UI)
 
 AgriBid is a web application that enables **Farmers** to list crops and **Buyers** to place competitive bids, creating a transparent and efficient agri-commerce platform.
 
@@ -6,16 +6,16 @@ AgriBid is a web application that enables **Farmers** to list crops and **Buyers
 
 ---
 
-## ✨ Features
-- 👨‍🌾 **Farmer Dashboard** – Farmers can list crops with details (name, quantity, quality, price).  
-- 🛒 **Buyer Dashboard** – Buyers can view crops and place bids.  
-- 💬 **Messaging System** – Direct chat between farmers and buyers.  
-- 🌍 **Multi-language Support** – Accessible to diverse users. 
-- 📱 **Responsive UI** – Optimized for desktop and mobile.  
+## Features
+- **Farmer Dashboard** – Farmers can list crops with details (name, quantity, quality, price).  
+- **Buyer Dashboard** – Buyers can view crops and place bids.  
+- **Messaging System** – Direct chat between farmers and buyers.  
+- **Multi-language Support** – Accessible to diverse users. 
+- **Responsive UI** – Optimized for desktop and mobile.  
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Frontend:** Angular 17, Angular Material, Bootstrap 5, FontAwesome  
 - **Backend (API Integration):** Spring Boot 3.5, Java 17, REST APIs  
 - **Database:** MongoDB 4  
@@ -24,7 +24,7 @@ AgriBid is a web application that enables **Farmers** to list crops and **Buyers
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 - [Node.js](https://nodejs.org/) (v18+ recommended)  
@@ -50,7 +50,7 @@ ng serve
 ng build
 ```
 - The build artifacts will be stored in the dist/ directory.
-## 📸 Screenshots
+## Screenshots
 
 ### Main Screen
 <img width="1852" height="962" alt="Screenshot from 2025-08-25 14-05-12" src="https://github.com/user-attachments/assets/b0ebdffa-9bce-444b-8b25-1c9ef632ddb5" />
